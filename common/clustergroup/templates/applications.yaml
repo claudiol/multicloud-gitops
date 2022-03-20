@@ -56,6 +56,8 @@ spec:
   syncPolicy:
     automated: {}
     #  selfHeal: true
+    syncOptions:
+    - Replace=true
 {{- end }}
 ---
 {{- end }}
