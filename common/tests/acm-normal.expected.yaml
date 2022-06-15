@@ -98,10 +98,8 @@ spec:
           name: edge-clustergroup-config
         spec:
           remediationAction: enforce
-          severity: med
+          severity: medium
           namespaceSelector:
-            exclude:
-              - kube-*
             include:
               - default
           object-templates:
@@ -180,10 +178,8 @@ spec:
           name: openshift-gitops-config
         spec:
           remediationAction: enforce
-          severity: med
+          severity: medium
           namespaceSelector:
-            exclude:
-              - kube-*
             include:
               - default
           object-templates:

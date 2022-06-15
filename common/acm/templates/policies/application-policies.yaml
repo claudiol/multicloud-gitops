@@ -18,10 +18,8 @@ spec:
           name: {{ .name }}-clustergroup-config
         spec:
           remediationAction: enforce
-          severity: med
+          severity: medium
           namespaceSelector:
-            exclude:
-              - kube-*
             include:
               - default
           object-templates:
