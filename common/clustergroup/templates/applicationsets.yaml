@@ -31,21 +31,21 @@ spec:
           valueFiles: |
             - "{{ coalesce .valuesDirectoryURL $.Values.global.valuesDirectoryURL }}/values-global.yaml"
             - "{{ coalesce .valuesDirectoryURL $.Values.global.valuesDirectoryURL }}/values-{{ $.Values.clusterGroup.name }}.yaml"
-          parameters:
-            - name: global.repoURL
-              value: $ARGOCD_APP_SOURCE_REPO_URL
-            - name: global.targetRevision
-              value: $ARGOCD_APP_SOURCE_TARGET_REVISION
-            - name: global.namespace
-              value: $ARGOCD_APP_NAMESPACE
-            - name: global.pattern
-              value: {{ $.Values.global.pattern }}
-            - name: global.valuesDirectoryURL
-              value: {{ coalesce .valuesDirectoryURL $.Values.global.valuesDirectoryURL }}
-            - name: global.hubClusterDomain
-              value: {{ $.Values.global.hubClusterDomain }}
-            - name: global.localClusterDomain
-              value: {{ coalesce $.Values.global.localClusterDomain $.Values.global.hubClusterDomain }}
+          #parameters:
+          #  - name: global.repoURL
+          #    value: $ARGOCD_APP_SOURCE_REPO_URL
+          #  - name: global.targetRevision
+          #    value: $ARGOCD_APP_SOURCE_TARGET_REVISION
+          #  - name: global.namespace
+          #    value: $ARGOCD_APP_NAMESPACE
+          #  - name: global.pattern
+          #    value: {{ $.Values.global.pattern }}
+          #  - name: global.valuesDirectoryURL
+          #    value: {{ coalesce .valuesDirectoryURL $.Values.global.valuesDirectoryURL }}
+          #  - name: global.hubClusterDomain
+          #    value: {{ $.Values.global.hubClusterDomain }}
+          #  - name: global.localClusterDomain
+          #    value: {{ coalesce $.Values.global.localClusterDomain $.Values.global.hubClusterDomain }}
       destination:
         server: https://kubernetes.default.svc
         namespace: {{ $namespace }}
