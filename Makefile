@@ -10,7 +10,11 @@ help:
 	make -f common/Makefile $*
 
 install: deploy ## installs the pattern, inits the vault and loads the secrets
-	make vault-init
+	@if grep -v -e '^\s\+#' "values-hub.yaml" | grep -q -e "insecureUnsealVaultInsideCluster:\s\+true"; then \
+	  echo "Skipping 'make vault-init' as we're unsealing the vault from inside the cluster"; \
+	else \
+	  make vault-init; \
+	fi
 	make load-secrets
 	echo "Installed"
 
@@ -30,3 +34,12 @@ helmlint:
 kubeconform:
 	make -f common/Makefile CHARTS="$(wildcard charts/all/*)" kubeconform
 	make -f common/Makefile CHARTS="$(wildcard charts/hub/*)" kubeconform
+
+super-linter: ## Runs super linter locally
+	podman run -e RUN_LOCAL=true -e USE_FIND_ALGORITHM=true	\
+					-e VALIDATE_BASH=false \
+					-e VALIDATE_JSCPD=false \
+					-e VALIDATE_KUBERNETES_KUBEVAL=false \
+					-e VALIDATE_YAML=false \
+					-e VALIDATE_ANSIBLE=false \
+					-v $(PWD):/tmp/lint:rw,z docker.io/github/super-linter:slim-v4
