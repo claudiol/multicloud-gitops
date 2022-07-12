@@ -21,6 +21,14 @@ clusterGroup:
   - config-demo
   - golang-external-secrets
 
+  applicationSets:
+    clusterops:
+      name: cluster-ops
+      namespace: clusterops
+      project: hub
+      kustomize: true
+      path: charts/all/cluster-ops/base
+      
   applications:
     acm:
       name: acm

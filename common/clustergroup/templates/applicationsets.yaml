@@ -1,0 +1,55 @@
+{{/* Only define this if there are any applicationSets defined */}}
+{{- if gt (len $.Values.clusterGroup.applicationSets) 0 -}}
+{{- $namespace := cat $.Values.global.pattern $.Values.clusterGroup.name | replace " " "-" }}
+{{- range .Values.clusterGroup.applicationSets }}
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: {{ .name }}
+  namespace: {{ $namespace }}
+  labels:
+    app: {{ .name }}
+spec:
+  generators:
+  - git:
+      repoURL: {{ coalesce .repoURL $.Values.global.repoURL }}
+      revision: {{ coalesce .targetRevision $.Values.global.targetRevision }} 
+      directories:
+      - path: {{ .path }}
+  template:
+    metadata:
+      name: '{{path.basename}}'
+    spec:
+      project: {{ .project }}
+      syncPolicy:
+        automated: {}
+      source:
+        repoURL: {{ coalesce .repoURL $.Values.global.repoURL }}
+        targetRevision: {{ coalesce .targetRevision $.Values.global.targetRevision }} 
+        path: '{{path}}'
+        helm:
+          valueFiles: |
+            - "{{ coalesce .valuesDirectoryURL $.Values.global.valuesDirectoryURL }}/values-global.yaml"
+            - "{{ coalesce .valuesDirectoryURL $.Values.global.valuesDirectoryURL }}/values-{{ $.Values.clusterGroup.name }}.yaml"
+          parameters:
+            - name: global.repoURL
+              value: $ARGOCD_APP_SOURCE_REPO_URL
+            - name: global.targetRevision
+              value: $ARGOCD_APP_SOURCE_TARGET_REVISION
+            - name: global.namespace
+              value: $ARGOCD_APP_NAMESPACE
+            - name: global.pattern
+              value: {{ $.Values.global.pattern }}
+            - name: global.valuesDirectoryURL
+              value: {{ coalesce .valuesDirectoryURL $.Values.global.valuesDirectoryURL }}
+            - name: global.hubClusterDomain
+              value: {{ $.Values.global.hubClusterDomain }}
+            - name: global.localClusterDomain
+              value: {{ coalesce $.Values.global.localClusterDomain $.Values.global.hubClusterDomain }}
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: {{ $namespace }}
+{{- end }}
+---
+{{- end }}
+{{- end }}
