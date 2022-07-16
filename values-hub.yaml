@@ -67,13 +67,27 @@ clusterGroup:
     path: charts/all/config-demo
 
   managedClusterGroups:
-  - name: region-one
+  - name: non-prod
     helmOverrides:
     - name: clusterGroup.isHubCluster
       value: false
     clusterSelector:
       matchLabels:
-        clusterGroup: region-one
+        clusterGroup: non-prod
+  - name: staging
+    helmOverrides:
+    - name: clusterGroup.isHubCluster
+      value: false
+    clusterSelector:
+      matchLabels:
+        clusterGroup: staging
+  - name: prod
+    helmOverrides:
+    - name: clusterGroup.isHubCluster
+      value: false
+    clusterSelector:
+      matchLabels:
+        clusterGroup: prod
 
 #  To have apps in multiple flavors, use namespaces and use helm overrides as appropriate
 #
