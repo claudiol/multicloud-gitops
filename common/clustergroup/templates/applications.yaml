@@ -1,3 +1,4 @@
+{{- if not $.Values.global.deletePattern -}}
 {{- $namespace := cat $.Values.global.pattern $.Values.clusterGroup.name | replace " " "-" }}
 {{- range .Values.clusterGroup.applications }}
 apiVersion: argoproj.io/v1alpha1
@@ -59,4 +60,5 @@ spec:
     #  selfHeal: true
 {{- end }}
 ---
+{{- end }}
 {{- end }}
