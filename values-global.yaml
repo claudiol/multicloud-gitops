@@ -1,6 +1,7 @@
 ---
 global:
   pattern: multicloud-gitops
+  deletePattern: 0
 
   options:
     useCSV: false
