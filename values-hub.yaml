@@ -10,6 +10,7 @@ clusterGroup:
   - vault
   - golang-external-secrets
   - config-demo
+  - allapps
 
   subscriptions:
     acm:
