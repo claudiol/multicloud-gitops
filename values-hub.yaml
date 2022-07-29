@@ -22,6 +22,17 @@ clusterGroup:
   - hub
   - config-demo
 
+  applicationsets:
+    hubcluster:
+      name: all-hub-apps
+      namespace: allapps
+      generators: 
+        - git:
+            repoURL: https://github.com/claudiol/multicloud-gitops.git
+            revision: test-appsets
+            directories:
+            - path: charts/hub/all/*
+
   applications:
     acm:
       name: acm
