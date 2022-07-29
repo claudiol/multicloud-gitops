@@ -28,11 +28,11 @@ clusterGroup:
       namespace: allapps
       project: hub
       generators: 
-        - git:
-            repoURL: https://github.com/claudiol/multicloud-gitops.git
-            revision: test-appsets
-            directories:
-            - path: charts/hub/all/*
+      - git:
+          repoURL: https://github.com/claudiol/multicloud-gitops.git
+          revision: test-appsets
+          directories:
+          - path: charts/hub/all/*
 
   applications:
     acm:
