@@ -26,6 +26,7 @@ clusterGroup:
     hubcluster:
       name: all-hub-apps
       namespace: allapps
+      project: hub
       generators: 
         - git:
             repoURL: https://github.com/claudiol/multicloud-gitops.git
