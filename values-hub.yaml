@@ -61,15 +61,15 @@ clusterGroup:
             url: https://api.applicationset-test-1.blueprints.rhecoeng.com:6443
       template:
         metadata:
-          name: '{{cluster}}-guestbook'
+          name: '{{.Values.cluster}}-guestbook'
         spec:
           project: default
           source:
             repoURL: https://github.com/claudiol/multicloud-gitops.git
             targetRevision: applicationsets
-            path: charts/all/guestbook/{{cluster}}
+            path: charts/all/guestbook/{{.Values.cluster}}
           destination:
-            server: '{{url}}'
+            server: '{{.Values.url}}'
             namespace: guestbook
 
   imperative:
