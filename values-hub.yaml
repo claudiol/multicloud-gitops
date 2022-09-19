@@ -56,21 +56,21 @@ clusterGroup:
       name: guestbook
       generators:
       - list:
-        elements:
-        - cluster: engineering-dev
-          url: https://api.applicationset-test-1.blueprints.rhecoeng.com:6443
+          elements:
+          - cluster: engineering-dev
+            url: https://api.applicationset-test-1.blueprints.rhecoeng.com:6443
       template:
-      metadata:
-        name: '{{cluster}}-guestbook'
-      spec:
-        project: default
-        source:
-          repoURL: https://github.com/claudiol/multicloud-gitops.git
-          targetRevision: applicationsets
-          path: charts/all/guestbook/{{cluster}}
-        destination:
-          server: '{{url}}'
-          namespace: guestbook
+        metadata:
+          name: '{{cluster}}-guestbook'
+        spec:
+          project: default
+          source:
+            repoURL: https://github.com/claudiol/multicloud-gitops.git
+            targetRevision: applicationsets
+            path: charts/all/guestbook/{{cluster}}
+          destination:
+            server: '{{url}}'
+            namespace: guestbook
 
   imperative:
     # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
