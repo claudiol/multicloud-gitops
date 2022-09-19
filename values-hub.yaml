@@ -10,6 +10,7 @@ clusterGroup:
   - vault
   - golang-external-secrets
   - config-demo
+  - guestbook
 
   subscriptions:
     acm:
@@ -21,6 +22,7 @@ clusterGroup:
   projects:
   - hub
   - config-demo
+  - applicationset-demo
 
   applications:
     acm:
@@ -54,6 +56,8 @@ clusterGroup:
 
     guestbook:
       name: guestbook
+      namespace: guestbook
+      project: applicationset-demo
       generators:
       - list:
           elements:
