@@ -10,6 +10,7 @@ clusterGroup:
   - vault
   - golang-external-secrets
   - config-demo
+  - cluster-ops
 
   subscriptions:
     acm:
@@ -21,6 +22,7 @@ clusterGroup:
   projects:
   - hub
   - config-demo
+  - cluster-ops
 
   applications:
     acm:
@@ -39,6 +41,13 @@ clusterGroup:
       namespace: vault
       project: hub
       path: common/hashicorp-vault
+
+    clusterops:
+      name: clusterops
+      namespace: cluster-ops
+      project: cluster-ops
+      kustomize: true
+      path: charts/all/clusterops/overlays/hub
 
     golang-external-secrets:
       name: golang-external-secrets
