@@ -10,7 +10,7 @@ clusterGroup:
   - vault
   - golang-external-secrets
   - config-demo
-  - guestbook
+  - engineering-dev-guestbook
 
   subscriptions:
     acm:
@@ -56,16 +56,15 @@ clusterGroup:
 
     guestbook:
       name: guestbook
-      namespace: guestbook
+      namespace: engineering-dev-guestbook
       project: applicationset-demo
       generators:
       - list:
           elements:
           - cluster: engineering-dev
             url: https://api.applicationset-test-1.blueprints.rhecoeng.com:6443
-      path: charts/all/guestbook/{{"{{cluster}}"}}
-      destination:
-        server: https://api.applicationset-test-1.blueprints.rhecoeng.com:6443 #'{{"{{url}}"}}'
+      path: charts/all/guestbook/engineering-dev
+      destinationServer: https://api.applicationset-test-1.blueprints.rhecoeng.com:6443 #'{{"{{url}}"}}'
 
   imperative:
     # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
