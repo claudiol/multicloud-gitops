@@ -47,7 +47,7 @@ clusterGroup:
       namespace: cluster-ops
       project: cluster-ops
       kustomize: true
-      path: charts/all/clusterops/overlays/hub
+      path: charts/all/cluster-ops/overlays/hub
 
     golang-external-secrets:
       name: golang-external-secrets
