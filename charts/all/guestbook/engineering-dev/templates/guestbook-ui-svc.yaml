@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: guestbook-ui
+  namespace: engineering-dev-guestbook
 spec:
   ports:
   - port: 8081
