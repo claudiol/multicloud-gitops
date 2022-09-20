@@ -63,18 +63,9 @@ clusterGroup:
           elements:
           - cluster: engineering-dev
             url: https://api.applicationset-test-1.blueprints.rhecoeng.com:6443
-      template:
-        metadata:
-          name: 'engineeering-dev-guestbook'
-        spec:
-          project: default
-          source:
-            repoURL: https://github.com/claudiol/multicloud-gitops.git
-            targetRevision: applicationsets
-            path: charts/all/guestbook/engineering-dev #{{"{{cluster}}"}}
-          destination:
-            server: https://api.applicationset-test-1.blueprints.rhecoeng.com:6443 #'{{"{{url}}"}}'
-            namespace: guestbook
+      path: charts/all/guestbook/{{"{{cluster}}"}}
+      destination:
+        server: https://api.applicationset-test-1.blueprints.rhecoeng.com:6443 #'{{"{{url}}"}}'
 
   imperative:
     # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
