@@ -14,7 +14,8 @@ spec:
         app: guestbook-ui
     spec:
       containers:
-      - image: gcr.io/heptio-images/ks-guestbook-demo:0.1
+      #- image: gcr.io/heptio-images/ks-guestbook-demo:0.1
+      - image: registry.access.redhat.com/ubi8/httpd-24
         name: guestbook-ui
         ports:
         - containerPort: 80
