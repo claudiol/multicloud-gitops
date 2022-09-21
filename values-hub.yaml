@@ -64,7 +64,6 @@ clusterGroup:
       - clusterName:  engineering-dev
         clusterUrl: https://kubernetes.default.svc
       path: charts/all/guestbook/{{cluster}}
-      destinationServer: '{{`{{url}}`}}'
 
   #imperative:
     # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
