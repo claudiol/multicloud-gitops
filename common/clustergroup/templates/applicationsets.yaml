@@ -1,0 +1,86 @@
+{{- $namespace := cat $.Values.global.pattern $.Values.clusterGroup.name | replace " " "-" }}
+{{- range .Values.clusterGroup.applicationsets }}
+#####  {{- if or (.generators) (.generatorFile) (.useGeneratorValues) (.destinationServer) (.destinationNamespace) }}
+{{- if eq .generator "list" }}
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: {{ .name }}
+  namespace: {{ $namespace }}
+  labels:
+    app: {{ .name }}
+spec:
+  generators:
+    - list:
+        elements:
+        {{- range .elements }}
+        - cluster: {{ .clusterName }}
+          url: {{ .clusterUrl }}
+        {{- end }}
+  template:
+    metadata:
+      {{- $tempname := printf "{{cluster}}-%s" .name }}
+      name: {{ $tempname }}
+    spec:
+      project: {{ .project }}
+      source:
+        repoURL: {{ coalesce .repoURL $.Values.global.repoURL }}
+        targetRevision: {{ coalesce .targetRevision $.Values.global.targetRevision }}
+        path: {{ .path }}
+        {{- if not .kustomize }}
+        helm:
+          ignoreMissingValueFiles: true
+          valueFiles:
+            - "values.yaml"
+          parameters:
+            - name: global.hubClusterDomain
+              value: {{ $.Values.global.hubClusterDomain }}
+            - name: global.localClusterDomain
+              value: {{ coalesce $.Values.global.localClusterDomain $.Values.global.hubClusterDomain }}
+            - name: global.repoURL
+              value: {{ $.Values.global.repoURL }}
+            - name: global.targetRevision
+              value: {{ $.Values.global.targetRevision }}
+            - name: global.namespace
+              value: {{ $.Values.global.namespace }}
+            - name: global.pattern
+              value: {{ $.Values.global.pattern }}
+        {{- range .extraHubClusterDomainFields }}
+            - name: {{ . }}
+              value: {{ $.Values.global.hubClusterDomain }}
+        {{- end }}
+        {{- range .extraLocalClusterDomainFields }}
+            - name: {{ . }}
+              value: {{ $.Values.global.localClusterDomain }}
+        {{- end }}
+        {{- range .extraRepoURLFields }}
+            - name: {{ . }}
+              value: {{ $.Values.global.repoURL }}
+        {{- end }}
+        {{- range .extraTargetRevisionFields }}
+            - name: {{ . }}
+              value: {{ $.Values.global.targetRevision }}
+        {{- end }}
+        {{- range .extraNamespaceFields }}
+            - name: {{ . }}
+              value: {{ $.Values.global.namespace }}
+        {{- end }}
+        {{- range .extraPatternNameFields }}
+            - name: {{ . }}
+              value: {{ $.Values.global.pattern }}
+        {{- end }}
+        {{- range .overrides }}
+            - name: {{ .name  }}
+              value: {{ .value | quote  }}
+        {{- if .forceString }}
+              forceString: true
+        {{- end }}
+        {{- end }}
+        {{- end }}
+      destination:
+        server: {{ `{{url}}` }}
+        namespace: {{ coalesce .destinationNamespace .namespace $namespace }}
+---
+{{- end}}
+{{- end}}
+{{- end}}

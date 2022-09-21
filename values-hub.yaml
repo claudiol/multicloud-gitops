@@ -54,18 +54,17 @@ clusterGroup:
       project: config-demo
       path: charts/all/config-demo
 
+  applicationsets:
     guestbook:
       name: guestbook
       namespace: engineering-dev-guestbook
       project: applicationset-demo
-      generators:
-      - list:
-          elements:
-          - cluster: engineering-dev
-            url: kubernetes.default.svc
-            #api.applicationset-test-1.blueprints.rhecoeng.com
+      generator: list
+      elements:
+      - clusterName:  engineering-dev
+        clusterUrl: https://kubernetes.default.svc
       path: charts/all/guestbook/{{cluster}}
-      destinationServer: https://{{url}}
+      destinationServer: '{{`{{url}}`}}'
 
   #imperative:
     # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
