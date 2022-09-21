@@ -1,6 +1,7 @@
 {{- $namespace := cat $.Values.global.pattern $.Values.clusterGroup.name | replace " " "-" }}
 {{- range .Values.clusterGroup.applications }}
 {{- if or (.generators) (.generatorFile) (.useGeneratorValues) (.destinationServer) (.destinationNamespace) }}
+{{- $generatorlist := (index .generators 0) }} 
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
@@ -21,6 +22,22 @@ spec:
           - path: {{ .generatorFile | quote }}
         {{- end }}
   {{- end }}
+
+  {{- if hasKey $generatorlist "blah" }}
+    # do something conditional here...
+  template:
+    metadata:
+      name: '{{.cluster}}-guestbook'
+    spec:
+      project: {{ .project }}
+      source:
+        repoURL: {{ .url }}
+        targetRevision: HEAD
+        path: applicationset/examples/list-generator/guestbook/{{.cluster}}
+      destination:
+        server: '{{.url}}'
+        namespace: guestbook    
+  {{- else }}
   template:
     metadata:
       name: {{ coalesce .namespace $namespace }}
@@ -107,6 +124,7 @@ spec:
       destination:
         server: {{ coalesce .destinationServer "https://kubernetes.default.svc" }}
         namespace: {{ coalesce .destinationNamespace .namespace $namespace }}
+  {{- end }}
 ---
 {{- else }}
 apiVersion: argoproj.io/v1alpha1
