@@ -62,7 +62,8 @@ clusterGroup:
       - list:
           elements:
           - cluster: engineering-dev
-            url: api.applicationset-test-1.blueprints.rhecoeng.com
+            url: kubernetes.svc.local 
+            #api.applicationset-test-1.blueprints.rhecoeng.com
       path: charts/all/guestbook/{{cluster}}
       destinationServer: https://{{url}}
 
