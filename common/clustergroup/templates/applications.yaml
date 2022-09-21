@@ -23,21 +23,6 @@ spec:
         {{- end }}
   {{- end }}
 
-  {{- if hasKey $generatorlist "blah" }}
-    # do something conditional here...
-  template:
-    metadata:
-      name: '{{.cluster}}-guestbook'
-    spec:
-      project: {{ .project }}
-      source:
-        repoURL: {{ .url }}
-        targetRevision: HEAD
-        path: applicationset/examples/list-generator/guestbook/{{.cluster}}
-      destination:
-        server: '{{.url}}'
-        namespace: guestbook    
-  {{- else }}
   template:
     metadata:
       name: {{ coalesce .namespace $namespace }}
@@ -122,9 +107,9 @@ spec:
         {{- end }}
         {{- end }}
       destination:
-        server: {{ coalesce .destinationServer "https://kubernetes.default.svc" }}
+        #server: {{ coalesce .destinationServer "https://kubernetes.default.svc" }}
+        server: {{ .destinationServer }}
         namespace: {{ coalesce .destinationNamespace .namespace $namespace }}
-  {{- end }}
 ---
 {{- else }}
 apiVersion: argoproj.io/v1alpha1
