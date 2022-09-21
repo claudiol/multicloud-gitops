@@ -62,9 +62,9 @@ clusterGroup:
       - list:
           elements:
           - cluster: engineering-dev
-            url: https://api.applicationset-test-1.blueprints.rhecoeng.com
+            myurl: https://api.applicationset-test-1.blueprints.rhecoeng.com
       path: 'charts/all/guestbook/"{{".cluster"}}"'
-      destinationServer: '"{{.url}}"'
+      destinationServer: '"{{.myurl}}"'
 
   imperative:
     # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
