@@ -63,7 +63,7 @@ clusterGroup:
           elements:
           - cluster: engineering-dev
             url: https://api.applicationset-test-1.blueprints.rhecoeng.com
-      path: 'charts/all/guestbook/"{{.cluster}}"'
+      path: 'charts/all/guestbook/"{{".cluster"}}"'
       destinationServer: '"{{.url}}"'
 
   imperative:
