@@ -1,32 +1,36 @@
+---
+{{- if .Values.clusterGroup.applicationsets }}
 {{- $namespace := cat $.Values.global.pattern $.Values.clusterGroup.name | replace " " "-" }}
-{{- range .Values.clusterGroup.applicationsets }}
-#####  {{- if or (.generators) (.generatorFile) (.useGeneratorValues) (.destinationServer) (.destinationNamespace) }}
+{{- range .Values.clusterGroup.applicationsets}}
 {{- if eq .generator "list" }}
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: {{ .name }}
-  namespace: {{ $namespace }}
+  #namespace: {{ $namespace }}
   labels:
     app: {{ .name }}
 spec:
   generators:
-    - list:
-        elements:
-        {{- range .elements }}
+  - list:
+      elements:
+      {{- if .elements }}
+      {{- range .elements }}
         - cluster: {{ .clusterName }}
           url: {{ .clusterUrl }}
-        {{- end }}
+      {{- end }}
+      {{- end }}
   template:
     metadata:
       {{- $tempname := printf "{{cluster}}-%s" .name }}
-      name: {{ $tempname }}
+      name: '{{ $tempname }}'
     spec:
       project: {{ .project }}
       source:
         repoURL: {{ coalesce .repoURL $.Values.global.repoURL }}
         targetRevision: {{ coalesce .targetRevision $.Values.global.targetRevision }}
-        path: {{ .path }}
+        {{- $temppath := printf "%s/%s" .path `{{cluster}}` }}
+        path: {{ $temppath }}
         {{- if not .kustomize }}
         helm:
           ignoreMissingValueFiles: true
@@ -78,9 +82,8 @@ spec:
         {{- end }}
         {{- end }}
       destination:
-        server: {{ `{{url}}` }}
-        namespace: {{ coalesce .destinationNamespace .namespace $namespace }}
----
+        server: '{{ `{{url}}` }}'
+        namespace: {{ .destinationNamespace }}
 {{- end}}
 {{- end}}
 {{- end}}
