@@ -54,6 +54,11 @@ clusterGroup:
         chart: golang-external-secrets
       - repoURL: 'https://github.com/claudiol/multicloud-gitops'
         targetRevision: multisource-test
+      overrides:
+        - name: "serviceAccount.create"
+          value: false
+        - name: "serviceAccount.name"
+          value: "golang-external-secrets"
 
     config-demo:
       name: config-demo
