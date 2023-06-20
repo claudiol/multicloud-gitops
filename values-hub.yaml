@@ -48,7 +48,12 @@ clusterGroup:
       name: golang-external-secrets
       namespace: golang-external-secrets
       project: hub
-      path: common/golang-external-secrets
+      sources:
+      - repoURL: 'https://charts.hybrid-cloud-patterns.io/'
+        targetRevision: 0.0.1
+        chart: golang-external-secrets
+      - repoURL: 'https://github.com/claudiol/multicloud-gitops'
+        targetRevision: multisource-test
 
     config-demo:
       name: config-demo
