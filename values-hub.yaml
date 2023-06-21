@@ -55,9 +55,13 @@ clusterGroup:
       - repoURL: 'https://github.com/claudiol/multicloud-gitops'
         targetRevision: multisource-test
       overrides:
-        - name: "webhook.serviceAccount.create"
+        - name: "external-secrets.serviceAccount.create"
           value: false
-        - name: "webhook.serviceAccount.name"
+        - name: "external-secrets.serviceAccount.name"
+          value: "golang-external-secrets"
+        - name: "external-secrets.webhook.serviceAccount.create"
+          value: false
+        - name: "external-secrets.webhook.serviceAccount.name"
           value: "golang-external-secrets"
 
     config-demo:
