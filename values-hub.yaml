@@ -52,9 +52,7 @@ clusterGroup:
       - repoURL: 'https://charts.hybrid-cloud-patterns.io/'
         targetRevision: 0.0.1
         chart: golang-external-secrets
-      - repoURL: 'https://github.com/claudiol/multicloud-gitops'
-        targetRevision: multisource-test
-      overrides:
+        overrides:
         - name: "external-secrets.securityContext.runAsNonRoot"
           value: "true"
         - name: "external-secrets.securityContext.runAsUser"
@@ -67,6 +65,8 @@ clusterGroup:
           value: "true"
         - name: "external-secrets.certController.securityContext.runAsUser"
           value: "1000690000"
+      - repoURL: 'https://github.com/claudiol/multicloud-gitops'
+        targetRevision: multisource-test
 
     config-demo:
       name: config-demo
