@@ -55,12 +55,18 @@ clusterGroup:
       - repoURL: 'https://github.com/claudiol/multicloud-gitops'
         targetRevision: multisource-test
       overrides:
-        - name: "securityContext.runAsNonRoot"
+        - name: "external-secrets.securityContext.runAsNonRoot"
           value: "true"
-        - name: "webhook.securityContext.runAsNonRoot"
+        - name: "external-secrets.securityContext.runAsUser"
+          value: "1000690000"
+        - name: "external-secrets.webhook.securityContext.runAsNonRoot"
           value: "true"
-        - name: "certController.securityContext.runAsNonRoot"
+        - name: "external-secrets.webhook.securityContext.runAsUser"
+          value: "1000690000"
+        - name: "external-secrets.certController.securityContext.runAsNonRoot"
           value: "true"
+        - name: "external-secrets.certController.securityContext.runAsUser"
+          value: "1000690000"
 
     config-demo:
       name: config-demo
