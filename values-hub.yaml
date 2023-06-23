@@ -50,7 +50,7 @@ clusterGroup:
       project: hub
       sources:
       - repoURL: 'https://charts.hybrid-cloud-patterns.io/'
-        targetRevision: 0.0.1
+        targetRevision: 0.0.3
         chart: golang-external-secrets
       - repoURL: 'https://github.com/claudiol/multicloud-gitops'
         targetRevision: multisource-test
