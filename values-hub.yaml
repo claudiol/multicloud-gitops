@@ -42,7 +42,12 @@ clusterGroup:
       name: vault
       namespace: vault
       project: hub
-      path: common/hashicorp-vault
+      sources:
+      - repoURL: 'https://charts.hybrid-cloud-patterns.io/'
+        targetRevision: 0.0.4
+        chart: hashicorp-vault
+      - repoURL: 'https://github.com/claudiol/multicloud-gitops'
+        targetRevision: multisource-test
 
     golang-external-secrets:
       name: golang-external-secrets
