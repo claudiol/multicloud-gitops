@@ -72,11 +72,14 @@ clusterGroup:
       sources:
       - repoURL: https://github.com/claudiol/openshift-console-banner
         targetRevision: HEAD
+        ref: console
       - repoURL: https://gitlab.consulting.redhat.com/claudiol/hello-world/
         targetRevision: HEAD
+        ref: world
       - repoURL: https://github.com/hybrid-cloud-patterns/multicloud-gitops
         targetRevision: HEAD
         path: charts/all/config-demo
+        ref: config
 
           #    config-demo:
           #      name: config-demo
