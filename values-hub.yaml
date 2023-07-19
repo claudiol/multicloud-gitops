@@ -8,6 +8,7 @@ clusterGroup:
     - golang-external-secrets
     - config-demo
     - hello-world
+    - demo-apps
 
   subscriptions:
     acm:
@@ -20,6 +21,7 @@ clusterGroup:
     - hub
     - config-demo
     - hello-world
+    - demo-apps
 
   applications:
     acm:
@@ -60,17 +62,33 @@ clusterGroup:
       - repoURL: 'https://github.com/claudiol/multicloud-gitops'
         targetRevision: multisource-test
 
-    config-demo:
-      name: config-demo
-      namespace: config-demo
-      project: config-demo
-      path: charts/all/config-demo
+    # This shows an ArgoCD application with multiple git sources
+    # Each source will deploy an application
+    # We let argocd deploy the banner, hello-world and config-demo application
+    demo-apps:
+      name: demo-apps
+      namespace: demo-apps
+      project: demo-apps
+      sources:
+      - repoURL: https://github.com/claudiol/openshift-console-banner
+        targetRevision: HEAD
+      - repoURL: https://gitlab.consulting.redhat.com/claudiol/hello-world/
+        targetRevision: HEAD
+      - repoURL: https://github.com/hybrid-cloud-patterns/multicloud-gitops
+        targetRevision: HEAD
+        path: charts/all/config-demo
 
-    hello-world:
-      name: hello-world
-      namespace: hello-world
-      project: hello-world
-      path: charts/all/hello-world
+          #    config-demo:
+          #      name: config-demo
+          #      namespace: config-demo
+          #      project: config-demo
+          #      path: charts/all/config-demo
+
+          #    hello-world:
+          #      name: hello-world
+          #      namespace: hello-world
+          #      project: hello-world
+          #      path: charts/all/hello-world
 
   imperative:
     # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
