@@ -67,7 +67,7 @@ clusterGroup:
     # We let argocd deploy the banner, hello-world and config-demo application
     demo-apps:
       name: demo-apps
-      namespace: demo-apps
+      namespace: config-demo
       project: demo-apps
       sources:
       - repoURL: https://github.com/claudiol/openshift-console-banner
