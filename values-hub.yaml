@@ -76,7 +76,7 @@ clusterGroup:
         targetRevision: HEAD
       - repoURL: https://github.com/hybrid-cloud-patterns/multicloud-gitops
         targetRevision: HEAD
-        path: charts/all/config-demo
+        path: charts/all/hello-world
 
           #    config-demo:
           #      name: config-demo
