@@ -10,11 +10,10 @@ clusterGroup:
     - hello-world
     - openshift-operators-redhat:
         annotations:
-        - name: "openshift.io/node-selector"
-          value: ""
+          openshift.io/node-selector: ""
         labels:
-        - name: "openshift.io/cluster-monitoring"
-          value: "true"
+          openshift.io/cluster-monitoring: "true"
+          argocd.argoproj.io/managed-by: "ebc-multicloud-gitops-hub"
 
   subscriptions:
     acm:
