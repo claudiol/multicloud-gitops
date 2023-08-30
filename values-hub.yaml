@@ -14,7 +14,7 @@ clusterGroup:
           value: ""
         labels:
         - name: "openshift.io/cluster-monitoring"
-          value: true
+          value: "true"
 
   subscriptions:
     acm:
