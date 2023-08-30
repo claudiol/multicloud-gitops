@@ -8,6 +8,13 @@ clusterGroup:
     - golang-external-secrets
     - config-demo
     - hello-world
+    - openshift-operators-redhat
+      annotations:
+      - name: "openshift.io/node-selector"
+        value: ""
+      labels:
+      - name: "openshift.io/cluster-monitoring"
+        value: true
 
   subscriptions:
     acm:
