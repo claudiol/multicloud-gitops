@@ -8,6 +8,7 @@ metadata:
   name: {{ $k }}
   labels:
     argocd.argoproj.io/managed-by: {{ $.Values.global.pattern }}-{{ $.Values.clusterGroup.name }}
+    validatedpatterns.io/pattern: {{ $.Values.global.pattern }}
     {{- if $v.labels }}
     {{- range $key, $value := $v.labels }} {{- /* We loop here even though the map has always just one key */}}
     {{ $key }}: {{ $value | default "" | quote }}
@@ -24,6 +25,7 @@ metadata:
   {{- else if kindIs "string" $ns }}
   labels:
     argocd.argoproj.io/managed-by: {{ $.Values.global.pattern }}-{{ $.Values.clusterGroup.name }}
+    validatedpatterns.io/pattern: {{ $.Values.global.pattern }}
   name: {{ $ns }}
   {{- end }} {{- /* if kindIs "string" $ns */}}
 spec:
