@@ -1,5 +1,5 @@
 clusterGroup:
-  name: hub
+  name: bootstrap
   isHubCluster: true
 
   namespaces:
