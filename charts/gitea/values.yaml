@@ -508,7 +508,7 @@ postgresql-ha:
       database: gitea
       password: gitea
       username: gitea
-  enabled: true
+  enabled: false
   postgresql:
     repmgrPassword: changeme2
     postgresPassword: changeme1
