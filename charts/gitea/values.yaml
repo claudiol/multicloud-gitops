@@ -270,7 +270,7 @@ persistence:
   labels: {}
   storageClass:
   subPath:
-  volumeName: "data-gitea-postgresql-0"
+  volumeName: ""
   annotations:
     helm.sh/resource-policy: keep
 
