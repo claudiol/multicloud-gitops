@@ -455,7 +455,7 @@ primary:
   ##
   podSecurityContext:
     enabled: true
-    fsGroup: 1001
+      #fsGroup: 0
   ## Container Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param primary.containerSecurityContext.enabled Enable container security context
@@ -818,7 +818,7 @@ readReplicas:
   ##
   podSecurityContext:
     enabled: true
-    fsGroup: 1001
+      #fsGroup: 0
   ## Container Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param readReplicas.containerSecurityContext.enabled Enable container security context
@@ -1103,7 +1103,7 @@ backup:
     ## @param backup.cronjob.podSecurityContext.fsGroup Group ID for the CronJob
     podSecurityContext:
       enabled: true
-      fsGroup: 1001
+        #fsGroup: 0
     ## backup container's Security Context
     ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
     ## @param backup.cronjob.containerSecurityContext.runAsUser User ID for the backup container

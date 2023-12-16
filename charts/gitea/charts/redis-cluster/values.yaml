@@ -147,7 +147,7 @@ rbac:
 ##
 podSecurityContext:
   enabled: true
-  fsGroup: 1001
+    # fsGroup: 1001
   ## Uncomment the setting below to increase the net.core.somaxconn value
   ## e.g:
   ## sysctls:

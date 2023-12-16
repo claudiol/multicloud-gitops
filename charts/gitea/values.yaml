@@ -61,7 +61,7 @@ imagePullSecrets: []
 # Security context is only usable with rootless image due to image design
 ## @param podSecurityContext.fsGroup Set the shared file system group for all containers in the pod.
 podSecurityContext:
-  fsGroup: 1000
+  fsGroup: 0
 
 ## @param containerSecurityContext Security context
 containerSecurityContext:

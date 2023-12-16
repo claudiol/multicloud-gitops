@@ -225,7 +225,7 @@ postgresql:
   ##
   podSecurityContext:
     enabled: true
-    fsGroup: 1001
+      #fsGroup: 1001
   ## Container Security Context
   ## https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param postgresql.containerSecurityContext.enabled Enable container security context
@@ -722,7 +722,7 @@ witness:
   ##
   podSecurityContext:
     enabled: true
-    fsGroup: 1001
+      # fsGroup: 1001
   ## Container Security Context
   ## https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param witness.containerSecurityContext.enabled Enable container security context
@@ -1208,7 +1208,7 @@ pgpool:
   ##
   podSecurityContext:
     enabled: true
-    fsGroup: 1001
+      # fsGroup: 1001
   ## Container Security Context
   ## https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param pgpool.containerSecurityContext.enabled Enable container security context
