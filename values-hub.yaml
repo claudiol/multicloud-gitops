@@ -86,6 +86,9 @@ clusterGroup:
       namespace: gitea
       project: gitea
       path: charts/gitea
+      overrides:
+        - name: "clusterDomain"
+          value: "{{ .Values.global.localClusterDomain }}"
 
   imperative:
     # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
