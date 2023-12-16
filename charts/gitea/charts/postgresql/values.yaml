@@ -468,8 +468,8 @@ primary:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: 0
-    runAsGroup: 0
+    runAsUser: null
+      #runAsGroup: 0
     runAsNonRoot: true
     allowPrivilegeEscalation: false
     seccompProfile:
@@ -831,8 +831,8 @@ readReplicas:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: 0
-    runAsGroup: 0
+    runAsUser: null
+      #runAsGroup: 0
     runAsNonRoot: true
     allowPrivilegeEscalation: false
     seccompProfile:
@@ -1114,8 +1114,8 @@ backup:
     ## @param backup.cronjob.containerSecurityContext.seccompProfile.type Set backup container's Security Context seccompProfile type
     ## @param backup.cronjob.containerSecurityContext.capabilities.drop Set backup container's Security Context capabilities to drop
     containerSecurityContext:
-      runAsUser: 0
-      runAsGroup: 0
+      runAsUser: null
+        #runAsGroup: 0
       runAsNonRoot: true
       allowPrivilegeEscalation: false
       readOnlyRootFilesystem: true
@@ -1323,8 +1323,8 @@ volumePermissions:
   ## @param volumePermissions.containerSecurityContext.seccompProfile.type seccompProfile.type for the init container
   ##
   containerSecurityContext:
-    runAsUser: 0
-    runAsGroup: 0
+    runAsUser: null
+      #runAsGroup: 0
     runAsNonRoot: false
     seccompProfile:
       type: RuntimeDefault
@@ -1441,8 +1441,8 @@ metrics:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: 0
-    runAsGroup: 0
+    runAsUser: null
+      #runAsGroup: 0
     runAsNonRoot: true
     allowPrivilegeEscalation: false
     seccompProfile:
