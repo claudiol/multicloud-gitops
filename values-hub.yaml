@@ -89,6 +89,10 @@ clusterGroup:
       overrides:
         - name: "clusterDomain"
           value: "apps.claudiol-gitea.aws.validatedpatterns.io"
+        - name: "ingress.enabled"
+          value: "true"
+        - name: "ingress.host"
+          value: "git.apps.claudiol-gitea.aws.validatedpatterns.io"
 
   imperative:
     # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
