@@ -245,7 +245,7 @@ postgresql:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: 1001
+    runAsUser: 0
     runAsGroup: 0
     runAsNonRoot: true
     readOnlyRootFilesystem: false
@@ -742,7 +742,7 @@ witness:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: 1001
+    runAsUser: 0
     runAsGroup: 0
     runAsNonRoot: true
     readOnlyRootFilesystem: false
@@ -1228,7 +1228,7 @@ pgpool:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: 1001
+    runAsUser: 0
     runAsGroup: 0
     runAsNonRoot: true
     readOnlyRootFilesystem: false
@@ -1589,7 +1589,7 @@ metrics:
   ##
   podSecurityContext:
     enabled: true
-    runAsUser: 1001
+    runAsUser: 0
     runAsGroup: 0
     runAsNonRoot: true
     seccompProfile:

@@ -177,7 +177,7 @@ maxUnavailable: ""
 ##
 containerSecurityContext:
   enabled: true
-  runAsUser: 1001
+  runAsUser: 0
   runAsNonRoot: true
   privileged: false
   readOnlyRootFilesystem: false

@@ -64,7 +64,9 @@ podSecurityContext:
   fsGroup: 1000
 
 ## @param containerSecurityContext Security context
-containerSecurityContext: {}
+containerSecurityContext:
+    runAsNonRoot: true
+    runAsUser: null
 #   allowPrivilegeEscalation: false
 #   capabilities:
 #     drop:
