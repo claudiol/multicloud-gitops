@@ -34,7 +34,7 @@ strategy:
     maxUnavailable: 0
 
 ## @param clusterDomain cluster domain
-clusterDomain: {{ .Values.global.clusterDomain }}
+clusterDomain: {{ .Values.global.localClusterDomain }}
 
 ## @section Image
 ## @param image.registry image registry, e.g. gcr.io,docker.io
