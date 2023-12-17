@@ -91,7 +91,7 @@ clusterGroup:
           value: "apps.claudiol-gitea.aws.validatedpatterns.io"
         - name: "ingress.enabled"
           value: "true"
-        - name: "ingress.host"
+        - name: "ingress.hosts.host"
           value: "git.apps.claudiol-gitea.aws.validatedpatterns.io"
 
   imperative:
