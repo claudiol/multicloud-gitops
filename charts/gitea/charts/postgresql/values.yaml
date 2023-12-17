@@ -483,10 +483,10 @@ primary:
   hostAliases: []
   ## @param primary.hostNetwork Specify if host network should be enabled for PostgreSQL pod (postgresql primary)
   ##
-  hostNetwork: true
+  hostNetwork: false
   ## @param primary.hostIPC Specify if host IPC should be enabled for PostgreSQL pod (postgresql primary)
   ##
-  hostIPC: true
+  hostIPC: false
   ## @param primary.labels Map of labels to add to the statefulset (postgresql primary)
   ##
   labels: {}
@@ -846,10 +846,10 @@ readReplicas:
   hostAliases: []
   ## @param readReplicas.hostNetwork Specify if host network should be enabled for PostgreSQL pod (PostgreSQL read only)
   ##
-  hostNetwork: true
+  hostNetwork: false
   ## @param readReplicas.hostIPC Specify if host IPC should be enabled for PostgreSQL pod (postgresql primary)
   ##
-  hostIPC: true
+  hostIPC: false
   ## @param readReplicas.labels Map of labels to add to the statefulset (PostgreSQL read only)
   ##
   labels: {}
