@@ -270,7 +270,7 @@ persistence:
   labels: {}
   storageClass: "gp3-csi"
   subPath: "repos/"
-  volumeName: ""
+  volumeName: "gitea-shared-storage"
   annotations:
     helm.sh/resource-policy: keep
 
