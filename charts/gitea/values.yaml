@@ -269,7 +269,7 @@ persistence:
     - ReadWriteOnce
   labels: {}
   storageClass: "gp3-csi"
-  subPath: "/repos"
+  subPath: "repos/"
   volumeName: ""
   annotations:
     helm.sh/resource-policy: keep
