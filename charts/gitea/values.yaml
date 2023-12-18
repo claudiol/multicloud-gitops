@@ -158,6 +158,7 @@ service:
 ingress:
   enabled: true
   className: nginx
+  protocol: https
   useSSL: false
   annotations:
   ## annotations used by the ingress - ex for k8s nginx ingress controller:
