@@ -158,7 +158,7 @@ service:
 ingress:
   enabled: true
     #className: nginx
-  protocol: https
+    #protocol: https
   useSSL: false
   annotations:
   ## annotations used by the ingress - ex for k8s nginx ingress controller:
@@ -166,7 +166,7 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: git.apps.claudiol-gitea.aws.validatedpatterns.io 
+    - host: git-scm.apps.claudiol-gitea.aws.validatedpatterns.io 
       paths:
         - path: /
           pathType: Prefix
