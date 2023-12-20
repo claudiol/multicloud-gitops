@@ -455,7 +455,7 @@ primary:
   ##
   podSecurityContext:
     enabled: true
-      #fsGroup: 0
+      #fsGroup: 1001
   ## Container Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param primary.containerSecurityContext.enabled Enable container security context
@@ -468,7 +468,7 @@ primary:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: null
+    runAsUser: nil
       #runAsGroup: 0
     runAsNonRoot: true
     allowPrivilegeEscalation: false
@@ -818,7 +818,7 @@ readReplicas:
   ##
   podSecurityContext:
     enabled: true
-      #fsGroup: 0
+    fsGroup: 1001
   ## Container Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param readReplicas.containerSecurityContext.enabled Enable container security context
@@ -831,7 +831,7 @@ readReplicas:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: null
+    runAsUser: nil
       #runAsGroup: 0
     runAsNonRoot: true
     allowPrivilegeEscalation: false
@@ -1103,7 +1103,7 @@ backup:
     ## @param backup.cronjob.podSecurityContext.fsGroup Group ID for the CronJob
     podSecurityContext:
       enabled: true
-        #fsGroup: 0
+        #fsGroup: 1001
     ## backup container's Security Context
     ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
     ## @param backup.cronjob.containerSecurityContext.runAsUser User ID for the backup container
@@ -1114,7 +1114,7 @@ backup:
     ## @param backup.cronjob.containerSecurityContext.seccompProfile.type Set backup container's Security Context seccompProfile type
     ## @param backup.cronjob.containerSecurityContext.capabilities.drop Set backup container's Security Context capabilities to drop
     containerSecurityContext:
-      runAsUser: null
+      runAsUser: nil
         #runAsGroup: 0
       runAsNonRoot: true
       allowPrivilegeEscalation: false
@@ -1323,7 +1323,7 @@ volumePermissions:
   ## @param volumePermissions.containerSecurityContext.seccompProfile.type seccompProfile.type for the init container
   ##
   containerSecurityContext:
-    runAsUser: null
+    runAsUser: nil
       #runAsGroup: 0
     runAsNonRoot: false
     seccompProfile:
@@ -1441,7 +1441,7 @@ metrics:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: null
+    runAsUser: nil
       #runAsGroup: 0
     runAsNonRoot: true
     allowPrivilegeEscalation: false

@@ -14,7 +14,7 @@ global:
   ##   - myRegistryKeySecretName
   ##
   imagePullSecrets: []
-  storageClass: "gp3-csi"
+  storageClass: ""
   hostAliases: []
   # - ip: 192.168.137.2
   #   hostnames:
@@ -60,13 +60,11 @@ imagePullSecrets: []
 ## @section Security
 # Security context is only usable with rootless image due to image design
 ## @param podSecurityContext.fsGroup Set the shared file system group for all containers in the pod.
-podSecurityContext: {}
-  #fsGroup: 0
+podSecurityContext:
+  #fsGroup: 1000
 
 ## @param containerSecurityContext Security context
-containerSecurityContext:
-    runAsNonRoot: true
-    runAsUser: null
+containerSecurityContext: #{}
 #   allowPrivilegeEscalation: false
 #   capabilities:
 #     drop:
@@ -76,13 +74,13 @@ containerSecurityContext:
 #   # get an error message from the SSH server that it is not possible to read from
 #   # the repository.
 #   # https://gitea.com/gitea/helm-chart/issues/161
-#     add:
-#       - SYS_CHROOT
-#   privileged: false
-#   readOnlyRootFilesystem: true
+  add:
+    - SYS_CHROOT
+  privileged: false
+  readOnlyRootFilesystem: true
 #   runAsGroup: 1000
-#   runAsNonRoot: true
-#   runAsUser: 1000
+  runAsNonRoot: true
+  runAsUser: nil
 
 ## @deprecated The securityContext variable has been split two:
 ## - containerSecurityContext
@@ -156,17 +154,15 @@ service:
 ## @param ingress.tls Ingress tls settings
 ## @extra ingress.apiVersion Specify APIVersion of ingress object. Mostly would only be used for argocd.
 ingress:
-  enabled: true
-    #className: nginx
-    #protocol: https
-  useSSL: false
+  enabled: false
+  # className: nginx
+  className:
   annotations:
-  ## annotations used by the ingress - ex for k8s nginx ingress controller:
     {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: git-scm.apps.claudiol-gitea.aws.validatedpatterns.io 
+    - host: git.example.com
       paths:
         - path: /
           pathType: Prefix
@@ -266,12 +262,12 @@ persistence:
   create: true
   mount: true
   claimName: gitea-shared-storage
-  size: 60Gi
+  size: 10Gi
   accessModes:
     - ReadWriteOnce
   labels: {}
-  storageClass: "gp3-csi"
-  subPath: "repos/"
+  storageClass:
+  subPath:
   volumeName: ""
   annotations:
     helm.sh/resource-policy: keep

@@ -147,7 +147,7 @@ rbac:
 ##
 podSecurityContext:
   enabled: true
-    # fsGroup: 1001
+  fsGroup: 1001
   ## Uncomment the setting below to increase the net.core.somaxconn value
   ## e.g:
   ## sysctls:
@@ -177,7 +177,7 @@ maxUnavailable: ""
 ##
 containerSecurityContext:
   enabled: true
-  runAsUser: null
+  runAsUser: 1001
   runAsNonRoot: true
   privileged: false
   readOnlyRootFilesystem: false
@@ -387,7 +387,7 @@ volumePermissions:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: null
+    runAsUser: 0
     privileged: false
   ## Container resource requests and limits
   ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
@@ -1049,7 +1049,7 @@ sysctlImage:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: null
+    runAsUser: 0
     privileged: true
   ## Container resource requests and limits
   ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
