@@ -162,7 +162,7 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: 
+    - host: git-scm.apps.claudiol-gitea.aws.validatedpatterns.io
       paths:
         - path: /
           pathType: Prefix
