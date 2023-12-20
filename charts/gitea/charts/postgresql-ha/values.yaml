@@ -245,8 +245,8 @@ postgresql:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: 1001
-    runAsGroup: 0
+    runAsUser: nil
+      #runAsGroup: 0
     runAsNonRoot: true
     readOnlyRootFilesystem: false
     allowPrivilegeEscalation: false
@@ -742,8 +742,8 @@ witness:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: 1001
-    runAsGroup: 0
+    runAsUser: nil
+      #runAsGroup: 0
     runAsNonRoot: true
     readOnlyRootFilesystem: false
     allowPrivilegeEscalation: false
@@ -1228,8 +1228,8 @@ pgpool:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: 1001
-    runAsGroup: 0
+    runAsUser: nil
+      #runAsGroup: 0
     runAsNonRoot: true
     readOnlyRootFilesystem: false
     allowPrivilegeEscalation: false
@@ -1589,8 +1589,8 @@ metrics:
   ##
   podSecurityContext:
     enabled: true
-    runAsUser: 1001
-    runAsGroup: 0
+    runAsUser: nil
+      #runAsGroup: 0
     runAsNonRoot: true
     seccompProfile:
       type: RuntimeDefault
@@ -1833,8 +1833,8 @@ volumePermissions:
   ## @param volumePermissions.podSecurityContext.seccompProfile.type Set Security Context seccompProfile for the init container volume-permissions container
   ##
   podSecurityContext:
-    runAsUser: 0
-    runAsGroup: 0
+    runAsUser: nil
+      #runAsGroup: 0
     runAsNonRoot: false
     seccompProfile:
       type: RuntimeDefault
