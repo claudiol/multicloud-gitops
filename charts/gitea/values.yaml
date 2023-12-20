@@ -74,8 +74,8 @@ containerSecurityContext: #{}
 #   # get an error message from the SSH server that it is not possible to read from
 #   # the repository.
 #   # https://gitea.com/gitea/helm-chart/issues/161
-  add:
-    - SYS_CHROOT
+#  add:
+#    - SYS_CHROOT
   privileged: false
   readOnlyRootFilesystem: true
 #   runAsGroup: 1000
