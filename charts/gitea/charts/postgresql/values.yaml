@@ -1213,7 +1213,7 @@ networkPolicy:
     ## @param networkPolicy.ingressRules.primaryAccessOnlyFrom.customRules Custom network policy for the PostgreSQL primary node.
     ##
     primaryAccessOnlyFrom:
-      enabled: false
+      enabled: true
       ## e.g:
       ## namespaceSelector:
       ##   label: ingress
