@@ -468,7 +468,7 @@ primary:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: nil
+      #runAsUser: nil
       #runAsGroup: 0
     runAsNonRoot: true
     allowPrivilegeEscalation: false
@@ -831,7 +831,7 @@ readReplicas:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: nil
+      #runAsUser: nil
       #runAsGroup: 0
     runAsNonRoot: true
     allowPrivilegeEscalation: false
@@ -1114,7 +1114,7 @@ backup:
     ## @param backup.cronjob.containerSecurityContext.seccompProfile.type Set backup container's Security Context seccompProfile type
     ## @param backup.cronjob.containerSecurityContext.capabilities.drop Set backup container's Security Context capabilities to drop
     containerSecurityContext:
-      runAsUser: nil
+      #runAsUser: nil
         #runAsGroup: 0
       runAsNonRoot: true
       allowPrivilegeEscalation: false
@@ -1323,7 +1323,7 @@ volumePermissions:
   ## @param volumePermissions.containerSecurityContext.seccompProfile.type seccompProfile.type for the init container
   ##
   containerSecurityContext:
-    runAsUser: nil
+    #runAsUser: nil
       #runAsGroup: 0
     runAsNonRoot: false
     seccompProfile:
@@ -1441,7 +1441,7 @@ metrics:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: nil
+      #runAsUser: nil
       #runAsGroup: 0
     runAsNonRoot: true
     allowPrivilegeEscalation: false
