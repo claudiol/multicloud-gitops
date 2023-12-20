@@ -177,7 +177,7 @@ maxUnavailable: ""
 ##
 containerSecurityContext:
   enabled: true
-  runAsUser: nil
+    #runAsUser: nil
   runAsNonRoot: true
   privileged: false
   readOnlyRootFilesystem: false
@@ -387,7 +387,7 @@ volumePermissions:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: nil
+      #runAsUser: nil
     privileged: false
   ## Container resource requests and limits
   ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
@@ -1049,7 +1049,7 @@ sysctlImage:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: nil
+      #runAsUser: nil
     privileged: true
   ## Container resource requests and limits
   ## ref: https://kubernetes.io/docs/user-guide/compute-resources/
