@@ -87,10 +87,10 @@ clusterGroup:
       project: gitea
       path: charts/gitea
       overrides:
-        - name: "clusterDomain"
-          value: "apps.claudiol-gitea.aws.validatedpatterns.io"
+        #- name: "clusterDomain"
+        #value: "apps.claudiol-gitea.aws.validatedpatterns.io"
         - name: "ingress.enabled"
-          value: "true"
+          value: "false"
         #- name: "ingress.hosts.host"
         #  value: "git.apps.claudiol-gitea.aws.validatedpatterns.io"
 
