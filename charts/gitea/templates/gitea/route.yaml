@@ -1,0 +1,12 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: gitea
+  namespace: gitea
+spec:
+  subdomain: git
+  port:
+    targetPort: 80
+  to:
+    kind: Service
+    name: gitea-http 
