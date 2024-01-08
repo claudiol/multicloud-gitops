@@ -60,12 +60,12 @@ imagePullSecrets: []
 ## @section Security
 # Security context is only usable with rootless image due to image design
 ## @param podSecurityContext.fsGroup Set the shared file system group for all containers in the pod.
-podSecurityContext:
-  fsGroup: 1000
+podSecurityContext: {}
+  #fsGroup: 1000
 
 ## @param containerSecurityContext Security context
-containerSecurityContext: {}
-#   allowPrivilegeEscalation: false
+containerSecurityContext: 
+  allowPrivilegeEscalation: false
 #   capabilities:
 #     drop:
 #       - ALL
@@ -76,10 +76,10 @@ containerSecurityContext: {}
 #   # https://gitea.com/gitea/helm-chart/issues/161
 #     add:
 #       - SYS_CHROOT
-#   privileged: false
+  privileged: false
 #   readOnlyRootFilesystem: true
 #   runAsGroup: 1000
-#   runAsNonRoot: true
+  runAsNonRoot: true
 #   runAsUser: 1000
 
 ## @deprecated The securityContext variable has been split two:
@@ -109,7 +109,7 @@ service:
   http:
     type: ClusterIP
     port: 3000
-    clusterIP: None
+      #    clusterIP: None
     loadBalancerIP:
     nodePort:
     externalTrafficPolicy:
@@ -133,7 +133,7 @@ service:
   ssh:
     type: ClusterIP
     port: 22
-    clusterIP: None
+      # clusterIP: None
     loadBalancerIP:
     nodePort:
     externalTrafficPolicy:
@@ -506,7 +506,7 @@ postgresql-ha:
       database: gitea
       password: gitea
       username: gitea
-  enabled: true
+  enabled: false
   postgresql:
     repmgrPassword: changeme2
     postgresPassword: changeme1
@@ -529,7 +529,7 @@ postgresql-ha:
 ## @param postgresql.global.postgresql.service.ports.postgresql PostgreSQL service port (overrides `service.ports.postgresql`)
 ## @param postgresql.primary.persistence.size PVC Storage Request for PostgreSQL volume
 postgresql:
-  enabled: false
+  enabled: true
   global:
     postgresql:
       auth:
