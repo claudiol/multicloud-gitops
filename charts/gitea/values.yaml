@@ -61,10 +61,10 @@ imagePullSecrets: []
 # Security context is only usable with rootless image due to image design
 ## @param podSecurityContext.fsGroup Set the shared file system group for all containers in the pod.
 podSecurityContext:
-  #fsGroup: 1000
+  fsGroup: 1000
 
 ## @param containerSecurityContext Security context
-containerSecurityContext: #{}
+containerSecurityContext: {}
 #   allowPrivilegeEscalation: false
 #   capabilities:
 #     drop:
@@ -74,13 +74,13 @@ containerSecurityContext: #{}
 #   # get an error message from the SSH server that it is not possible to read from
 #   # the repository.
 #   # https://gitea.com/gitea/helm-chart/issues/161
-#  add:
-#    - SYS_CHROOT
-  privileged: false
-  readOnlyRootFilesystem: true
+#     add:
+#       - SYS_CHROOT
+#   privileged: false
+#   readOnlyRootFilesystem: true
 #   runAsGroup: 1000
-  runAsNonRoot: true
-  runAsUser: 1000680000
+#   runAsNonRoot: true
+#   runAsUser: 1000
 
 ## @deprecated The securityContext variable has been split two:
 ## - containerSecurityContext
@@ -154,7 +154,7 @@ service:
 ## @param ingress.tls Ingress tls settings
 ## @extra ingress.apiVersion Specify APIVersion of ingress object. Mostly would only be used for argocd.
 ingress:
-  enabled: true
+  enabled: false
   # className: nginx
   className:
   annotations:
@@ -162,7 +162,7 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: git-scm.apps.claudiol-gitea.aws.validatedpatterns.io
+    - host: git.example.com
       paths:
         - path: /
           pathType: Prefix

@@ -54,7 +54,7 @@ kubeVersion: ""
 nameOverride: ""
 ## @param fullnameOverride String to fully override common.names.fullname template
 ##
-fullnameOverride: "gitea-postgresql"
+fullnameOverride: ""
 ## @param clusterDomain Kubernetes Cluster Domain
 ##
 clusterDomain: cluster.local
@@ -455,7 +455,7 @@ primary:
   ##
   podSecurityContext:
     enabled: true
-      #fsGroup: 1001
+    fsGroup: 1001
   ## Container Security Context
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param primary.containerSecurityContext.enabled Enable container security context
@@ -468,8 +468,8 @@ primary:
   ##
   containerSecurityContext:
     enabled: true
-      #runAsUser: nil
-      #runAsGroup: 0
+    runAsUser: 1001
+    runAsGroup: 0
     runAsNonRoot: true
     allowPrivilegeEscalation: false
     seccompProfile:
@@ -831,8 +831,8 @@ readReplicas:
   ##
   containerSecurityContext:
     enabled: true
-      #runAsUser: nil
-      #runAsGroup: 0
+    runAsUser: 1001
+    runAsGroup: 0
     runAsNonRoot: true
     allowPrivilegeEscalation: false
     seccompProfile:
@@ -1103,7 +1103,7 @@ backup:
     ## @param backup.cronjob.podSecurityContext.fsGroup Group ID for the CronJob
     podSecurityContext:
       enabled: true
-        #fsGroup: 1001
+      fsGroup: 1001
     ## backup container's Security Context
     ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
     ## @param backup.cronjob.containerSecurityContext.runAsUser User ID for the backup container
@@ -1114,8 +1114,8 @@ backup:
     ## @param backup.cronjob.containerSecurityContext.seccompProfile.type Set backup container's Security Context seccompProfile type
     ## @param backup.cronjob.containerSecurityContext.capabilities.drop Set backup container's Security Context capabilities to drop
     containerSecurityContext:
-      #runAsUser: nil
-        #runAsGroup: 0
+      runAsUser: 1001
+      runAsGroup: 0
       runAsNonRoot: true
       allowPrivilegeEscalation: false
       readOnlyRootFilesystem: true
@@ -1213,7 +1213,7 @@ networkPolicy:
     ## @param networkPolicy.ingressRules.primaryAccessOnlyFrom.customRules Custom network policy for the PostgreSQL primary node.
     ##
     primaryAccessOnlyFrom:
-      enabled: true
+      enabled: false
       ## e.g:
       ## namespaceSelector:
       ##   label: ingress
@@ -1323,8 +1323,8 @@ volumePermissions:
   ## @param volumePermissions.containerSecurityContext.seccompProfile.type seccompProfile.type for the init container
   ##
   containerSecurityContext:
-    #runAsUser: nil
-      #runAsGroup: 0
+    runAsUser: 0
+    runAsGroup: 0
     runAsNonRoot: false
     seccompProfile:
       type: RuntimeDefault
@@ -1441,8 +1441,8 @@ metrics:
   ##
   containerSecurityContext:
     enabled: true
-      #runAsUser: nil
-      #runAsGroup: 0
+    runAsUser: 1001
+    runAsGroup: 0
     runAsNonRoot: true
     allowPrivilegeEscalation: false
     seccompProfile:
