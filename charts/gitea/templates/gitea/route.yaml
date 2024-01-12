@@ -1,12 +1,14 @@
+{{- if .Values.global.openshift.enable }}
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: gitea
   namespace: gitea
 spec:
-  subdomain: git
+  subdomain: {{ .Values.global.openshift.route.hostname }}
   port:
     targetPort: http
   to:
     kind: Service
     name: gitea-http 
+{{- end }}

@@ -225,7 +225,7 @@ postgresql:
   ##
   podSecurityContext:
     enabled: true
-    fsGroup: 1001
+      #fsGroup: 1001
   ## Container Security Context
   ## https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param postgresql.containerSecurityContext.enabled Enable container security context
@@ -245,7 +245,7 @@ postgresql:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: 1001
+      #runAsUser: 1001
     runAsGroup: 0
     runAsNonRoot: true
     readOnlyRootFilesystem: false
@@ -722,7 +722,7 @@ witness:
   ##
   podSecurityContext:
     enabled: true
-    fsGroup: 1001
+      #fsGroup: 1001
   ## Container Security Context
   ## https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param witness.containerSecurityContext.enabled Enable container security context
@@ -742,7 +742,7 @@ witness:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: 1001
+      #runAsUser: 1001
     runAsGroup: 0
     runAsNonRoot: true
     readOnlyRootFilesystem: false
@@ -1208,7 +1208,7 @@ pgpool:
   ##
   podSecurityContext:
     enabled: true
-    fsGroup: 1001
+      #fsGroup: 1001
   ## Container Security Context
   ## https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
   ## @param pgpool.containerSecurityContext.enabled Enable container security context
@@ -1228,7 +1228,7 @@ pgpool:
   ##
   containerSecurityContext:
     enabled: true
-    runAsUser: 1001
+      #runAsUser: 1001
     runAsGroup: 0
     runAsNonRoot: true
     readOnlyRootFilesystem: false
@@ -1589,7 +1589,7 @@ metrics:
   ##
   podSecurityContext:
     enabled: true
-    runAsUser: 1001
+      #runAsUser: 1001
     runAsGroup: 0
     runAsNonRoot: true
     seccompProfile:
@@ -1833,7 +1833,7 @@ volumePermissions:
   ## @param volumePermissions.podSecurityContext.seccompProfile.type Set Security Context seccompProfile for the init container volume-permissions container
   ##
   podSecurityContext:
-    runAsUser: 0
+    #runAsUser: 0
     runAsGroup: 0
     runAsNonRoot: false
     seccompProfile:

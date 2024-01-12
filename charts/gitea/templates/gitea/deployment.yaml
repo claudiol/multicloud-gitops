@@ -138,7 +138,7 @@ spec:
           securityContext:
             {{- /* By default this container runs as user 1000 unless otherwise stated */ -}}
             {{- $csc := deepCopy .Values.containerSecurityContext -}}
-            {{- if (hasKey $csc "runAsUser") -}}
+            {{- if and (not (hasKey $csc "runAsUser")) (eq .Values.global.openshift.enable false ) -}}
             {{- $_ := set $csc "runAsUser" 0 -}}
             {{- end -}}
             {{- toYaml $csc | nindent 12 }}
@@ -169,7 +169,7 @@ spec:
           securityContext:
             {{- /* By default this container runs as user 1000 unless otherwise stated */ -}}
             {{- $csc := deepCopy .Values.containerSecurityContext -}}
-            {{- if (hasKey $csc "runAsUser") -}}
+            {{- if and (not (hasKey $csc "runAsUser")) (eq .Values.global.openshift.enable false ) -}}
             {{- $_ := set $csc "runAsUser" 0 -}}
             {{- end -}}
             {{- toYaml $csc | nindent 12 }}

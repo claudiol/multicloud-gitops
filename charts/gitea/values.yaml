@@ -16,6 +16,10 @@ global:
   imagePullSecrets: []
   storageClass: ""
   hostAliases: []
+  openshift: 
+    enable: true
+    route:
+      hostname: git
   # - ip: 192.168.137.2
   #   hostnames:
   #   - example.com
@@ -66,9 +70,9 @@ podSecurityContext: {}
 ## @param containerSecurityContext Security context
 containerSecurityContext: 
   allowPrivilegeEscalation: false
-#   capabilities:
-#     drop:
-#       - ALL
+  capabilities:
+    drop:
+      - ALL
 #   # Add the SYS_CHROOT capability for root and rootless images if you intend to
 #   # run pods on nodes that use the container runtime cri-o. Otherwise, you will
 #   # get an error message from the SSH server that it is not possible to read from
