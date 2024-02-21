@@ -2,6 +2,7 @@ clusterGroup:
   name: devel
   isHubCluster: false
   namespaces:
+    - imperative
     - hello-world
     - development-banner
   subscriptions:
