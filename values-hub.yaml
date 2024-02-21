@@ -82,15 +82,94 @@ clusterGroup:
         # per playbook timeout in seconds
         timeout: 234
         # verbosity: "-v"
+# This section is used by ACM
   managedClusterGroups:
-    exampleRegion:
-      name: group-one
-      acmlabels:
-        - name: clusterGroup
-          value: group-one
-      helmOverrides:
-        - name: clusterGroup.isHubCluster
-          value: false
+  - name: resilient
+    helmOverrides:
+    - name: clusterGroup.isHubCluster
+      value: "false"
+    clusterSelector:
+      matchLabels:
+        clusterGroup: resilient
+      matchExpressions:
+      - key: vendor
+        operator: In
+        values:
+          - OpenShift
+    clusterPools:
+      # example of pool for primary spokes
+      aws-ca-central-1:
+        name: aws-region-ca
+        openshiftVersion: 4.12.49
+        baseDomain: blueprints.rhecoeng.com
+        platform:
+          aws:
+            region: us-west-2
+        clusters:
+          - customspoke1
+        controlPlane:
+          platform:
+            aws:
+              type: m5.2xlarge
+              zones:
+                - us-west-2-den-1a
+        workers:
+          replicas: 3
+          platform:
+            aws:
+              type: m5.xlarge
+              zones:
+                - us-west-2-den-1a
+      # example of pool for secondary spokes
+      aws-eu-central-1:
+        name: aws-region-eu
+        openshiftVersion: 4.12.49
+        baseDomain: blueprints.rhecoeng.com
+        platform:
+          aws:
+            region: us-east-1
+        clusters:
+          - customspoke1bu
+        controlPlane:
+          platform:
+            aws:
+              type: m5.2xlarge
+              zones:
+                - us-east-1-atl-1
+        workers:
+          replicas: 3
+          platform:
+            aws:
+              type: m5.xlarge
+              zones:
+                - us-east-1-atl-1
+
+  - name: development
+    helmOverrides:
+    - name: clusterGroup.isHubCluster
+      value: "false"
+    clusterSelector:
+      matchLabels:
+        clusterGroup: devel
+      matchExpressions:
+      - key: vendor
+        operator: In
+        values:
+          - OpenShift
+
+  - name: production
+    helmOverrides:
+    - name: clusterGroup.isHubCluster
+      value: "false"
+    clusterSelector:
+      matchLabels:
+        clusterGroup: prod
+      matchExpressions:
+      - key: vendor
+        operator: In
+        values:
+          - OpenShift
+  
           # Before enabling cluster provisioning, ensure AWS and/or Azure
           #   credentials and OCP pull secrets are defined in Vault.
           #   See values-secret.yaml.template
