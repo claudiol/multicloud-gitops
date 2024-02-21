@@ -145,14 +145,13 @@ clusterGroup:
               type: m5.xlarge
               zones:
                 - us-east-1a
-
   - name: development
     helmOverrides:
     - name: clusterGroup.isHubCluster
       value: "false"
-    clusterSelector:
-      matchLabels:
-        clusterGroup: devel
+    acmlabels:
+    - name: clusterGroup
+      value: devel
       matchExpressions:
       - key: vendor
         operator: In
