@@ -149,9 +149,9 @@ clusterGroup:
     helmOverrides:
     - name: clusterGroup.isHubCluster
       value: "false"
-    acmlabels:
-    - name: clusterGroup
-      value: devel
+    clusterSelector:
+      matchLabels:
+        clusterGroup: devel
       matchExpressions:
       - key: vendor
         operator: In
