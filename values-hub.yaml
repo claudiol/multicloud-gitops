@@ -99,6 +99,7 @@ clusterGroup:
     clusterPools:
       # example of pool for primary spokes
       aws-ca-central-1:
+        size: 3
         name: aws-region-ca
         openshiftVersion: 4.12.49
         baseDomain: blueprints.rhecoeng.com
@@ -122,6 +123,7 @@ clusterGroup:
                 - us-west-2a
       # example of pool for secondary spokes
       aws-eu-central-1:
+        size: 3
         name: aws-region-eu
         openshiftVersion: 4.12.49
         baseDomain: blueprints.rhecoeng.com
