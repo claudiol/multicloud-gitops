@@ -168,6 +168,53 @@ clusterGroup:
         operator: In
         values:
           - OpenShift
+    clusterPools:
+      # example of pool for primary spokes
+      aws-us-west-2:
+        name: aws-region-us-west
+        openshiftVersion: 4.12.49
+        baseDomain: blueprints.rhecoeng.com
+        platform:
+          aws:
+            region: us-west-2
+        clusters:
+          - westregioncustomspoke1
+        controlPlane:
+          platform:
+            aws:
+              type: m5.2xlarge
+              zones:
+                - us-west-2a
+        workers:
+          replicas: 3
+          platform:
+            aws:
+              type: m5.xlarge
+              zones:
+                - us-west-2a
+      # example of pool for secondary spokes
+      aws-east-1:
+        name: aws-region-us-east
+        openshiftVersion: 4.12.49
+        baseDomain: blueprints.rhecoeng.com
+        platform:
+          aws:
+            region: us-east-1
+        clusters:
+          - eastregionspoke2
+        controlPlane:
+          platform:
+            aws:
+              type: m5.2xlarge
+              zones:
+                - us-east-1a
+        workers:
+          replicas: 3
+          platform:
+            aws:
+              type: m5.xlarge
+              zones:
+                - us-east-1a
   
           # Before enabling cluster provisioning, ensure AWS and/or Azure
           #   credentials and OCP pull secrets are defined in Vault.
