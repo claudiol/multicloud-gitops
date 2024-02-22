@@ -69,7 +69,7 @@ spec:
                       # Requires ACM 2.6 or higher (I could not come up with something less terrible to get maj.min)
                       - name: global.clusterVersion
                         #value: '{{ `{{ printf "%d.%d" ((semver (index (lookup "config.openshift.io/v1" "ClusterVersion" "" "version").status.history 0).version).Major) ((semver (index (lookup "config.openshift.io/v1" "ClusterVersion" "" "version").status.history 0).version).Minor) }}` }}'
-                        value: '{{ `{{ (index (lookup "config.openshift.io/v1" "ClusterVersion" "" "version").status.history 0) }}` }}'
+                        value: '{{ `{{ (index (lookup "config.openshift.io/v1" "ClusterVersion" "" "version").status.history 0).version }}` }}'
                       - name: global.localClusterName
                         value: '{{ `{{ (split "." (lookup "config.openshift.io/v1" "Ingress" "" "cluster").spec.domain)._1 }}` }}'
                       - name: global.clusterPlatform
