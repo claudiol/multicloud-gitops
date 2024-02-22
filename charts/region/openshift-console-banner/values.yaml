@@ -1,0 +1,10 @@
+# Default values for openshift-console-banner.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+banner:
+  text: 'OpenShift Cluster'
+  location: BannerTop
+  environment: 'DEVELOPMENT'
+  color: '#fff'
+  backgroundColor: '#000000'
