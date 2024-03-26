@@ -74,6 +74,7 @@ clusterGroup:
       name: cluster-ops
       namespace: cluster-ops
       kustomize: true
+      project: cluster-ops
       path: chart/all/cluster-ops/base
   imperative:
     # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
