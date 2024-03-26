@@ -75,7 +75,7 @@ clusterGroup:
       namespace: cluster-ops
       kustomize: true
       project: cluster-ops
-      path: chart/all/cluster-ops/base
+      path: charts/all/cluster-ops/base
   imperative:
     # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
     # The default schedule is every 10 minutes: imperative.schedule
