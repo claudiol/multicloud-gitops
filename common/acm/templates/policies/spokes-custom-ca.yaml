@@ -35,7 +35,7 @@ spec:
                 data:
                   {{- range .Values.global.certificates }}
                     {{ .fqdn }}: |
-                      {{.certificate | quote}}
+                      {{ printf "%s" .certificate }}
                   {{- end }}
             - complianceType: mustonlyhave
               objectDefinition:
@@ -47,7 +47,7 @@ spec:
                 data:
                   {{- range .Values.global.certificates }}
                     {{ .fqdn }}: |
-                      {{ .certificate | quote }}
+                      {{ printf "%s" .certificate }}
                   {{- end }}
 ---
 apiVersion: policy.open-cluster-management.io/v1

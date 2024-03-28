@@ -7,7 +7,7 @@ global:
     installPlanApproval: Automatic
   certificates:
     - fqdn: ngcrepo.ngc.com
-      certificate: |
+      certificate:
         -----BEGIN CERTIFICATE-----
         MIID/jCCAuagAwIBAgIUWN9qd+XS/DcCyVA7nA9Jc/dsgkcwDQYJKoZIhvcNAQEL
         BQAwgYExCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJWQTERMA8GA1UEBwwITmV3IFlv
