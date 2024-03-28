@@ -6,7 +6,7 @@ global:
     syncPolicy: Automatic
     installPlanApproval: Automatic
   certificates:
-    - fqdn: ngcrepo
+    - fqdn: ngcrepo.ngc.com
       certificate: |
         -----BEGIN CERTIFICATE-----
         MIID/jCCAuagAwIBAgIUWN9qd+XS/DcCyVA7nA9Jc/dsgkcwDQYJKoZIhvcNAQEL
@@ -35,4 +35,4 @@ global:
 main:
   clusterGroupName: hub
   multiSourceConfig:
-    enabled: true
+    enabled: false

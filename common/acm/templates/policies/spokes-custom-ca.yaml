@@ -53,7 +53,7 @@ spec:
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: openshift-gitops-placement-binding
+  name: custom-ca-openshift-gitops-placement-binding
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 placementRef:
