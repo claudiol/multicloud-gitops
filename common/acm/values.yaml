@@ -9,6 +9,33 @@ global:
   targetRevision: main
   options:
     applicationRetryLimit: 20
+  certificates:
+    - fqdn: ngcrepo.ngc.com
+      certificate: |
+        -----BEGIN CERTIFICATE-----
+        MIID/jCCAuagAwIBAgIUWN9qd+XS/DcCyVA7nA9Jc/dsgkcwDQYJKoZIhvcNAQEL
+        BQAwgYExCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJWQTERMA8GA1UEBwwITmV3IFlv
+        cmsxDTALBgNVBAoMBFF1YXkxETAPBgNVBAsMCERpdmlzaW9uMTAwLgYDVQQDDCdp
+        cC0xMC0wLTEtMTUudXMtd2VzdC0xLmNvbXB1dGUuaW50ZXJuYWwwHhcNMjIxMjIw
+        MDM1MTQ3WhcNMjUxMDA5MDM1MTQ3WjCBgTELMAkGA1UEBhMCVVMxCzAJBgNVBAgM
+        AlZBMREwDwYDVQQHDAhOZXcgWW9yazENMAsGA1UECgwEUXVheTERMA8GA1UECwwI
+        RGl2aXNpb24xMDAuBgNVBAMMJ2lwLTEwLTAtMS0xNS51cy13ZXN0LTEuY29tcHV0
+        ZS5pbnRlcm5hbDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALQPYDcy
+        HfD0TaCxb/GWZQKQsaTJqSuaGNKsdKlSg3CKeqYNYZUXiw9a4NoGju5I5OLc5k2I
+        YdP86bYmZg/Awz7I+lmCclexUKodJtg1ZoXKHWMzfxeZxrn09ftpxzxtvkbvmBt0
+        /ESt4tVWd6UVAd0qBFuxqg801Vqjq55w1YoRm8+WHhSVRtpK7JFgCGo9GsqNMULF
+        S98bILdLccKTROdCW8nibccIX4E6onoqV98gKmeDObKldA+MYk4o3WI7Alshal4Q
+        vTkR+OLDHWc3ZZqQz7a4G1YWFV3C9gyxDzvdmKg7i+KgD5mywMK3ljOvfFR/FgWd
+        ZU+w2CiinJhVmksCAwEAAaNsMGowCwYDVR0PBAQDAgLkMBMGA1UdJQQMMAoGCCsG
+        AQUFBwMBMDIGA1UdEQQrMCmCJ2lwLTEwLTAtMS0xNS51cy13ZXN0LTEuY29tcHV0
+        ZS5pbnRlcm5hbDASBgNVHRMBAf8ECDAGAQH/AgEBMA0GCSqGSIb3DQEBCwUAA4IB
+        AQCRkRHd7IQ/Jcd4mGxqneFAcaIA+7w85XfyhQNIWtcJ22lfD3cE0r6v/5vU/le2
+        ISt/mCkcsmiergJqbIphyr9q6yNFep9d8He4wks/qqEgw9qUExCS6lnbaRMGXKvp
+        Wzx4yB+op3SRDOPTYalqqFAZxTIqxBvYqDfr94URMt5E1UJ/fZxGlyGcLzEr8MTm
+        fnd75Bksk5A3kYVudk2ab5JgEhutjNmIS877cl0lq6C+AwHs7YlYWWhLUs1zEnzt
+        R8GKksQEk7d+8ZTmVXY16ACW8s4UNTGB0qlOP7Hn01CurbFYS5LUgd4ajIysyrTa
+        EvUHQ+W5F0X0wx8x76a7zwk3
+        -----END CERTIFICATE-----
 
 clusterGroup:
   subscriptions:
