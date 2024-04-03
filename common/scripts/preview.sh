@@ -76,4 +76,5 @@ for line in $appValueFiles; do
 done
 
 cmd="helm template $chart --name-template ${APP} -n ${namespace} ${VALUE_FILES} ${OVERRIDES} ${CLUSTER_OPTS}"
+echo $cmd
 eval "$cmd"

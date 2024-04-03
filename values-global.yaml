@@ -36,6 +36,4 @@ main:
   clusterGroupName: hub
   multiSourceConfig:
     enabled: false
-  gitops:
-    channel: "latest"
 

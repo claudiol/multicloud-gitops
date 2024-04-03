@@ -59,8 +59,10 @@ preview-all:
 	@common/scripts/preview-all.sh $(TARGET_REPO) $(TARGET_BRANCH)
 
 preview-%:
-	CLUSTERGROUP?=$(shell yq ".main.clusterGroupName" values-global.yaml)
-	@common/scripts/preview.sh $(CLUSTERGROUP) $* $(TARGET_REPO) $(TARGET_BRANCH)
+	@echo $@
+	#CLUSTERGROUP?="$(shell yq ".main.clusterGroupName" values-global.yaml)"
+	@echo "common/scripts/preview.sh hub $* $(TARGET_REPO) $(TARGET_BRANCH)"
+	@common/scripts/preview.sh $(shell yq ".main.clusterGroupName" values-global.yaml) $* $(TARGET_REPO) $(TARGET_BRANCH)
 
 .PHONY: operator-deploy
 operator-deploy operator-upgrade: validate-prereq validate-origin validate-cluster ## runs helm install
