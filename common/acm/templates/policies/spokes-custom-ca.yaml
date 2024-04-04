@@ -1,8 +1,18 @@
-{{- if .Values.global.certificates }}
+# We copy the vp-private-repo-credentials from the "openshift-gitops" namespace
+# to the "open-cluster-management" via the "private-hub-policy"
+#
+# Then we copy the secret from the "open-cluster-management" namespace to the
+# managed clusters "openshift-gitops" instance
+#
+# And we also copy the same secret to the namespaced argo's namespace
+{{- if and $.Values.global.certificates $.Values.clusterGroup.isHubCluster }}
+{{- range $.Values.clusterGroup.managedClusterGroups }}
+{{- $group := . }}
+{{- if not .hostedArgoSites }}
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
-  name: custom-ca-openshift-gitops-policy
+  name: custom-ca-{{ .name }}-gitops-policy
   annotations:
     policy.open-cluster-management.io/standards: NIST-CSF
     policy.open-cluster-management.io/categories: PR.DS Data Security
@@ -17,7 +27,7 @@ spec:
         apiVersion: policy.open-cluster-management.io/v1
         kind: ConfigurationPolicy
         metadata:
-          name: custom-ca-openshift-gitops
+          name: custom-ca-{{ .name }}-openshift-gitops
         spec:
           remediationAction: enforce
           severity: medium
@@ -37,7 +47,7 @@ spec:
                     app.kubernetes.io/name: argocd-tls-certs-cm
                     app.kubernetes.io/part-of: argocd
                 data:
-                {{- range .Values.global.certificates }}
+                {{- range $.Values.global.certificates }}
                   {{ .fqdn }}: {{ .certificate | toYaml | indent 18 }}
                 {{- end }}
             - complianceType: mustonlyhave
@@ -46,20 +56,20 @@ spec:
                 kind: ConfigMap
                 metadata:
                   name: argocd-tls-certs-cm
-                  namespace:  {{ $.Values.global.pattern }}-{{ $.Values.clusterGroup.name }}
+                  namespace:  {{ $.Values.global.pattern }}-{{ .name }}
                   labels:
-                    app.kubernetes.io/managed-by: {{ $.Values.clusterGroup.name }}-gitops-server
+                    app.kubernetes.io/managed-by: {{ .name }}-gitops-server
                     app.kubernetes.io/name: argocd-tls-certs-cm
                     app.kubernetes.io/part-of: argocd
                 data:
-                {{- range .Values.global.certificates }}
+                {{- range $.Values.global.certificates }}
                   {{ .fqdn }}: {{ .certificate | toYaml | indent 18 }}
                 {{- end }}
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
 metadata:
-  name: custom-ca-openshift-gitops-placement-binding
+  name: custom-ca-{{ .name }}-placement-binding
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 placementRef:
@@ -74,7 +84,7 @@ subjects:
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
 metadata:
-  name: custom-ca-openshift-gitops-placement
+  name: custom-ca-{{ .name }}-placement
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
@@ -91,4 +101,6 @@ spec:
         operator: NotIn
         values:
           - 'true'
+{{- end }}
+{{- end }}
 {{- end }}
