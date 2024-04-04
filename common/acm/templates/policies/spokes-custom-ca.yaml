@@ -48,7 +48,7 @@ spec:
                   name: argocd-tls-certs-cm
                   namespace:  {{ $.Values.global.pattern }}-{{ $.Values.clusterGroup.name }}
                   labels:
-                    app.kubernetes.io/managed-by: {{ $.Values.global.pattern }}-{{ $.Values.main.clusterGroupName }}
+                    app.kubernetes.io/managed-by: {{ $.Values.clusterGroup.name }}-gitops-server
                     app.kubernetes.io/name: argocd-tls-certs-cm
                     app.kubernetes.io/part-of: argocd
                 data:
