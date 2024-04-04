@@ -32,6 +32,10 @@ spec:
                 metadata:
                   name: argocd-tls-certs-cm
                   namespace: openshift-gitops
+                  labels:
+                    app.kubernetes.io/managed-by: openshift-gitops-server
+                    app.kubernetes.io/name: argocd-tls-certs-cm
+                    app.kubernetes.io/part-of: argocd
                 data:
                 {{- range .Values.global.certificates }}
                   {{ .fqdn }}: {{ .certificate | toYaml | indent 18 }}
@@ -42,7 +46,11 @@ spec:
                 kind: ConfigMap
                 metadata:
                   name: argocd-tls-certs-cm
-                  namespace:  {{ $.Values.global.pattern }}-{{ $.Values.main.clusterGroupName }}
+                  namespace:  {{ $.Values.global.pattern }}-{{ $.Values.clusterGroup.name }}
+                  labels:
+                    app.kubernetes.io/managed-by: {{ $.Values.global.pattern }}-{{ $.Values.main.clusterGroupName }}
+                    app.kubernetes.io/name: argocd-tls-certs-cm
+                    app.kubernetes.io/part-of: argocd
                 data:
                 {{- range .Values.global.certificates }}
                   {{ .fqdn }}: {{ .certificate | toYaml | indent 18 }}
