@@ -25,7 +25,7 @@ spec:
             include:
               - default
           object-templates:
-            - complianceType: mustonlyhave
+            - complianceType: musthave
               objectDefinition:
                 apiVersion: v1
                 kind: ConfigMap
@@ -40,7 +40,7 @@ spec:
                 {{- range .Values.global.certificates }}
                   {{ .fqdn }}: {{ .certificate | toYaml | indent 18 }}
                 {{- end }}
-            - complianceType: mustonlyhave
+            - complianceType: musthave
               objectDefinition:
                 apiVersion: v1
                 kind: ConfigMap
