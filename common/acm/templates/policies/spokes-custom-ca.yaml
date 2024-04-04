@@ -40,7 +40,6 @@ spec:
                 {{- range .Values.global.certificates }}
                   {{ .fqdn }}: {{ .certificate | toYaml | indent 18 }}
                 {{- end }}
-            {{- if eq .Values.clusterGroup.isHubCluster false }}
             - complianceType: mustonlyhave
               objectDefinition:
                 apiVersion: v1
@@ -56,7 +55,6 @@ spec:
                 {{- range .Values.global.certificates }}
                   {{ .fqdn }}: {{ .certificate | toYaml | indent 18 }}
                 {{- end }}
-            {{- end }}
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PlacementBinding
