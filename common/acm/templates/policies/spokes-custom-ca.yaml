@@ -73,11 +73,11 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 placementRef:
-  name: custom-ca-openshift-gitops-placement
+  name: custom-ca-{{ .name }}-placement
   kind: PlacementRule
   apiGroup: apps.open-cluster-management.io
 subjects:
-  - name: custom-ca-openshift-gitops-policy
+  - name: custom-ca-{{ .name }}-gitops-policy
     kind: Policy
     apiGroup: policy.open-cluster-management.io
 ---
