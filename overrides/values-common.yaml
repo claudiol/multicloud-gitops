@@ -3,6 +3,7 @@ clusterGroup:
     - cluster-ops
   subscriptions:
   projects:
+    - cluster-ops
   applications:
     banner:
       name: cluster-ops
