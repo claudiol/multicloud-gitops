@@ -1,0 +1,13 @@
+clusterGroup:
+  namespaces:
+    - cluster-ops
+  subscriptions:
+  projects:
+  applications:
+    banner:
+      name: cluster-ops
+      namespace: cluster-ops
+      kustomize: true
+      project: cluster-ops
+      path: charts/all/cluster-ops/overlays/edge-1
+  imperative:
