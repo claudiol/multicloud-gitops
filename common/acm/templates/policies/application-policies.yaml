@@ -48,7 +48,7 @@ spec:
                       - {{ $valueFile | quote }}
                       {{- end }}
                       {{- range $valueFile := .extraValueFiles }}
-                      - {{ $valueFile | quote }}
+                        - {{ $valueFile | quote }}
                       {{- end }}
                       parameters:
                       - name: global.repoURL
