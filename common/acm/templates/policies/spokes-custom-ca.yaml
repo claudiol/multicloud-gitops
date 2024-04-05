@@ -40,6 +40,21 @@ spec:
                 apiVersion: v1
                 kind: ConfigMap
                 metadata:
+                  name: argocd-tls-certs-cm
+                  namespace: openshift-gitops
+                  labels:
+                    app.kubernetes.io/managed-by: openshift-gitops-server
+                    app.kubernetes.io/name: argocd-tls-certs-cm
+                    app.kubernetes.io/part-of: argocd
+                data:
+                {{- range $.Values.global.certificates }}
+                  {{ .fqdn }}: {{ .certificate | toYaml | indent 18 }}
+                {{- end }}
+            - complianceType: mustonlyhave
+              objectDefinition:
+                apiVersion: v1
+                kind: ConfigMap
+                metadata:
                   name: argocd-tls-certs-cm-yoyo-mama
                   namespace:  {{ $.Values.global.pattern }}-{{ .name }}
                   labels:
