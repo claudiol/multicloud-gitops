@@ -1,11 +1,13 @@
 {{- if not (eq .Values.enabled "plumbing") }}
-{{- range $ns := .Values.clusterGroup.namespaces }}
+{{- $tempns := list .Values.clusterGroup.namespaces }}
+{{- $ns := index $tempns 0 }}
+{{- if kindIs "map" $ns }}
+{{- range $k, $v := $ns }}{{- /* We loop here even though the map has always just one key */}}
 apiVersion: v1
 kind: Namespace
 metadata:
-  {{- if kindIs "map" $ns }}
-  {{- range $k, $v := $ns }}{{- /* We loop here even though the map has always just one key */}}
   name: {{ $k }}
+  {{- if ne $v nil }}
   labels:
     argocd.argoproj.io/managed-by: {{ $.Values.global.pattern }}-{{ $.Values.clusterGroup.name }}
     {{- if $v.labels }}
@@ -19,14 +21,11 @@ metadata:
     {{ $key }}: {{ $value | default "" | quote }}
     {{- end }}
   {{- end }}{{- /* if $v.annotations */}}
-  {{- end }}{{- /* range $k, $v := $ns */}}
-
-  {{- else if kindIs "string" $ns }}
-  labels:
-    argocd.argoproj.io/managed-by: {{ $.Values.global.pattern }}-{{ $.Values.clusterGroup.name }}
-  name: {{ $ns }}
-  {{- end }} {{- /* if kindIs "string" $ns */}}
+  {{- end }}
 spec:
 ---
-{{- end }}
-{{- end }}
+{{- end }}{{- /* range $k, $v := $ns */}}
+{{- else }} {{- /* if kindIs "map" $ns */}}
+{{- template "clustergroup.template.core.namespaces.list" (list .Values.clusterGroup.namespaces $.Values.global.pattern $.Values.clusterGroup.name) }}
+{{- end }}{{- /* range $ns */}}
+{{- end }}{{- /* if plumbing */}}

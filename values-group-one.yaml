@@ -7,14 +7,17 @@ clusterGroup:
   name: group-one
   isHubCluster: false
   namespaces:
-    - config-demo
-    - hello-world
-    - golang-external-secrets
+    config-demo:
+    hello-world:
+    golang-external-secrets:
   subscriptions:
+  sharedValueFiles:
+  - '/overrides/values-{{ $.Values.global.clusterPlatform }}.yaml'
+  - '/overrides/values-common.yaml'
   projects:
-    - eso
-    - config-demo
-    - hello-world
+    eso:
+    config-demo:
+    hello-world:
   applications:
     golang-external-secrets:
       name: golang-external-secrets

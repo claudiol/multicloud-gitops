@@ -1,9 +1,6 @@
 clusterGroup:
-  namespaces:
-    - cluster-ops
-  subscriptions:
   projects:
-    - cluster-ops
+    cluster-ops:
   applications:
     banner:
       name: cluster-ops

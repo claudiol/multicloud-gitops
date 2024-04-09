@@ -1,29 +1,11 @@
 {{- if not (eq .Values.enabled "core") }}
 {{- $namespace := print $.Values.global.pattern "-" $.Values.clusterGroup.name }}
-{{- range .Values.clusterGroup.projects }}
-apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: {{ . }}
-{{- if (eq $.Values.enabled "plumbing") }}
-  namespace: openshift-gitops
+{{- $projects:= list .Values.clusterGroup.projects }}
+{{- range $projects }}
+{{- if kindIs "map" . }}
+{{- template "clustergroup.template.plumbing.projects.map" (list $projects $namespace $.Values.enabled) }}  
 {{- else }}
-  namespace: {{ $namespace }}
-{{- end }}
-spec:
-  description: "Pattern {{ . }}"
-  destinations:
-  - namespace: '*'
-    server: '*'
-  clusterResourceWhitelist:
-  - group: '*'
-    kind: '*'
-  namespaceResourceWhitelist:
-  - group: '*'
-    kind: '*'
-  sourceRepos:
-  - '*'
-status: {}
----
+{{- template "clustergroup.template.plumbing.projects.list" (list $projects $namespace $.Values.enabled) }}  
+{{- end }} {{- /* end if map */ -}}
 {{- end }}
 {{- end }}

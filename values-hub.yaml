@@ -7,7 +7,6 @@ clusterGroup:
     - golang-external-secrets
     - config-demo
     - hello-world
-    - cluster-ops
   subscriptions:
     acm:
       name: advanced-cluster-management
@@ -18,11 +17,12 @@ clusterGroup:
     - hub
     - config-demo
     - hello-world
-    - cluster-ops
+    - additional
   # Explicitly mention the cluster-state based overrides we plan to use for this pattern.
   # We can use self-referential variables because the chart calls the tpl function with these variables defined
   sharedValueFiles:
   - '/overrides/values-{{ $.Values.global.clusterPlatform }}.yaml'
+  - '/overrides/values-common.yaml'
   applications:
     acm:
       name: acm
@@ -54,12 +54,6 @@ clusterGroup:
       namespace: hello-world
       project: hello-world
       path: charts/all/hello-world
-    banner:
-      name: cluster-ops
-      namespace: cluster-ops
-      kustomize: true
-      project: cluster-ops
-      path: charts/all/cluster-ops/base
   imperative:
     # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
     # The default schedule is every 10 minutes: imperative.schedule
