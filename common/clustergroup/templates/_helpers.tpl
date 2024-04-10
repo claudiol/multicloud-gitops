@@ -74,8 +74,7 @@ Default always defined valueFiles to be included in Applications but with a pref
 {{- /* Helper function to generate AppProject from a map object */ -}}
 {{- /* Called from common/clustergroup/templates/plumbing/projects.yaml */ -}}
 {{- define "clustergroup.template.plumbing.projects.map" -}}
-{{- $temp := index . 0 }}
-{{- $projects := index $temp 0 }}
+{{- $projects := index . 0 }}
 {{- $namespace := index . 1 }}
 {{- $enabled := index . 2 }}
 {{- range $k, $v := $projects}}
@@ -106,11 +105,12 @@ status: {}
 {{- end }}
 {{- end }}
 
-{{- /* Helper function to generate AppProject from a list object */ -}}
-{{- /* Called from common/clustergroup/templates/plumbing/projects.yaml */ -}}
+{{- /* 
+  Helper function to generate AppProject from a list object.
+  Called from common/clustergroup/templates/plumbing/projects.yaml 
+*/ -}}
 {{- define "clustergroup.template.plumbing.projects.list" -}}
-{{- $temp := index . 0 }}
-{{- $projects := index $temp 0 }}
+{{- $projects := index . 0 }}
 {{- $namespace := index . 1 }}
 {{- $enabled := index . 2 }}
 {{- range $projects}}
@@ -140,39 +140,3 @@ status: {}
 {{- end }}
 {{- end }}
 
-{{- /* Helper function to generate namespace from a list object */ -}}
-{{- define "clustergroup.template.core.namespaces.list" -}}
-{{- $tempns := index . 0}}
-{{- $clusterGroupName := index . 1}}
-{{- $patternName := index . 2}}
-{{- range $ns := $tempns }}
-apiVersion: v1
-kind: Namespace
-metadata:
-  {{- if kindIs "map" $ns }}
-  {{- range $k, $v := $ns }}{{- /* We loop here even though the map has always just one key */}}
-  name: {{ $k }}
-  labels:
-    argocd.argoproj.io/managed-by: {{ $patternName }}-{{ $clusterGroupName }}
-    {{- if $v.labels }}
-    {{- range $key, $value := $v.labels }} {{- /* We loop here even though the map has always just one key */}}
-    {{ $key }}: {{ $value | default "" | quote }}
-    {{- end }}
-    {{- end }}
-  {{- if $v.annotations }}
-  annotations:
-    {{- range $key, $value := $v.annotations }} {{- /* We loop through the map to get key/value pairs */}}
-    {{ $key }}: {{ $value | default "" | quote }}
-    {{- end }}
-  {{- end }}{{- /* if $v.annotations */}}
-  {{- end }}{{- /* range $k, $v := $ns */}}
-
-  {{- else if kindIs "string" $ns }}
-  labels:
-    argocd.argoproj.io/managed-by: {{ $patternName }}-{{ $clusterGroupName }}
-  name: {{ $ns }}
-  {{- end }} {{- /* if kindIs "string" $ns */}}
-spec:
----
-{{- end }}
-{{- end }}

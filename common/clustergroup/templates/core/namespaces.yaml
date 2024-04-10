@@ -1,6 +1,5 @@
 {{- if not (eq .Values.enabled "plumbing") }}
-{{- $tempns := list .Values.clusterGroup.namespaces }}
-{{- $ns := index $tempns 0 }}
+{{- $ns := .Values.clusterGroup.namespaces }}
 {{- if kindIs "map" $ns }}
 {{- range $k, $v := $ns }}{{- /* We loop here even though the map has always just one key */}}
 apiVersion: v1
