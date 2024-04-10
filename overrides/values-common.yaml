@@ -1,4 +1,6 @@
 clusterGroup:
+  namespaces:
+    cluster-ops:
   projects:
     cluster-ops:
   applications:
