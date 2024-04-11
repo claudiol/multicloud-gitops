@@ -10,4 +10,11 @@ clusterGroup:
       kustomize: true
       project: cluster-ops
       path: charts/all/cluster-ops/overlays/edge-1
+    terminal:
+      name: web-terminal
+      namespace: cluster-ops
+      kustomize: true
+      repoURL: https://github.com/redhat-cop/gitops-catalog
+      path: web-terminal/aggregate/overlays/default
+      targetRevision: main
   imperative: {}
