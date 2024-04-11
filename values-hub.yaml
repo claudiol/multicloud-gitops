@@ -81,7 +81,7 @@ clusterGroup:
       acmlabels:
         - name: clusterGroup
           value: group-one
-      extraValueFiles:
+      sharedValueFiles:
         - '/overrides/values-common.yaml'
       helmOverrides:
         - name: clusterGroup.isHubCluster
