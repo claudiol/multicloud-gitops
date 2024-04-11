@@ -21,12 +21,6 @@ clusterGroup:
       channel: release-2.9
         #csv: advanced-cluster-management.v2.6.1
 
-    amq:
-      name: amq-streams 
-      channel: stable
-      installPlanApproval: Manual
-      csv: amqstreams.v2.6.0-0
-
   projects:
     hub:
     config-demo:
