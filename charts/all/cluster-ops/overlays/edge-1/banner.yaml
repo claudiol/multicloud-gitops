@@ -5,4 +5,4 @@ metadata:
   name: purpose-banner
 spec:
   text: SPOKE-EDGE-CLUSTER
-  backgroundColor: '#00ff00'
+  backgroundColor: '#ff0000'
