@@ -3,6 +3,7 @@ clusterGroup:
     web-terminal: 
   projects:
     web-terminal:
+  subscriptions: {}
   applications:
     web-terminal:
       name: web-terminal
