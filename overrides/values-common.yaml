@@ -10,5 +10,5 @@ clusterGroup:
       namespace: web-terminal
       project: web-terminal
       kustomize: true
-      repoURL: https://github.com/redhat-cop/gitops-catalog
+      repoURL: https://github.com/redhat-cop/gitops-catalog.git
       path: web-terminal/aggregate/overlays/default
