@@ -1,14 +1,12 @@
 clusterGroup:
   namespaces:
-    web-terminal: 
+    hello-world:
   projects:
-    web-terminal:
-  subscriptions: {}
+    hello-world:
+  subscriptions: 
   applications:
-    web-terminal:
-      name: web-terminal
-      namespace: web-terminal
-      project: web-terminal
-      kustomize: true
-      repoURL: https://github.com/redhat-cop/gitops-catalog.git
-      path: web-terminal/instance/overlays/default
+    hello-world:
+      name: hello-world
+      namespace: hello-world
+      project: hello-world
+      path: charts/all/hello-world
