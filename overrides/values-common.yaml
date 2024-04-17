@@ -1,8 +1,10 @@
 clusterGroup:
   namespaces:
     hello-world:
+    web-terminal:
   projects:
     hello-world:
+    web-terminal:
   subscriptions: 
   applications:
     hello-world:
