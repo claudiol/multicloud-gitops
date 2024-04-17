@@ -10,3 +10,10 @@ clusterGroup:
       namespace: hello-world
       project: hello-world
       path: charts/all/hello-world
+    web-terminal:
+      name: web-terminal
+      namespace: web-terminal
+      project: web-terminal
+      kustomize: true
+      repoURL: https://github.com/redhat-cop/gitops-catalog 
+      path: web-terminal/operator/base 
