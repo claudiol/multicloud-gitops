@@ -18,4 +18,5 @@ clusterGroup:
       project: web-terminal
       kustomize: true
       repoURL: https://github.com/redhat-cop/gitops-catalog 
+      targetRevision: main
       path: web-terminal/operator/base 
