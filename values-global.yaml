@@ -5,7 +5,10 @@ global:
     useCSV: false
     syncPolicy: Automatic
     installPlanApproval: Automatic
+  extraValueFiles:
+    - /overrides/values-common.yaml
 main:
   clusterGroupName: hub
   multiSourceConfig:
     enabled: true
+  experimentalCapabilities: initcontainers

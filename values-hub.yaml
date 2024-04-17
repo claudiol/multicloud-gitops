@@ -2,11 +2,18 @@ clusterGroup:
   name: hub
   isHubCluster: true
   namespaces:
-    - open-cluster-management
-    - vault
-    - golang-external-secrets
-    - config-demo
-    - hello-world
+    open-cluster-management:
+    my-namespace:
+      labels:
+        openshift.io/node-selector: ""
+        kubernetes.io/os: linux
+      annotations:
+        openshift.io/cluster-monitoring: "true"
+        owner: "namespace owner"
+    vault:
+    golang-external-secrets:
+    config-demo:
+    hello-world:
   subscriptions:
     acm:
       name: advanced-cluster-management
@@ -14,9 +21,9 @@ clusterGroup:
       channel: release-2.10
       #csv: advanced-cluster-management.v2.6.1
   projects:
-    - hub
-    - config-demo
-    - hello-world
+    hub:
+    config-demo:
+    hello-world:
   # Explicitly mention the cluster-state based overrides we plan to use for this pattern.
   # We can use self-referential variables because the chart calls the tpl function with these variables defined
   sharedValueFiles:

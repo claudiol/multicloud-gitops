@@ -1,0 +1,13 @@
+clusterGroup:
+  namespaces:
+    web-terminal: 
+  projects:
+    web-terminal:
+  applications:
+    wed-terminal:
+      name: wed-terminal
+      namespace: wed-terminal
+      project: wed-terminal
+      kustomize: true
+      repoURL: https://github.com/redhat-cop/gitops-catalog
+      path: web-terminal/aggregate/overlays/default
