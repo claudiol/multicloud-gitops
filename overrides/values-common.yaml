@@ -19,4 +19,4 @@ clusterGroup:
       kustomize: true
       repoURL: https://github.com/redhat-cop/gitops-catalog 
       targetRevision: main
-      path: web-terminal/instance/overlays/default
+      path: web-terminal/operator/overlays/fast
