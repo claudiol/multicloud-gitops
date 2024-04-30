@@ -8,4 +8,4 @@ global:
 main:
   clusterGroupName: hub
   multiSourceConfig:
-    enabled: true
+    enabled: false
