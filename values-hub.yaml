@@ -58,46 +58,46 @@ clusterGroup:
           kind: ManagedClusterInfo
           jsonPointers:
             - /spec/loggingCA
-    acs-central:
-      name: acs-central
-      namespace: stackrox
-      project: hub
-      path: charts/all/acs/central
-    ekho-cluster-management:
-      name: ekho-cluster-management
-      project: hub
-      kustomize: true
-      path: charts/all/ekho-cluster-management/overlays/prod
-    ekho-cost-collector:
-      name: ekho-cost-collector
-      namespace: ekho-cost-collector
-      project: hub
-      kustomize: true
-      repoURL: https://github.northgrum.com/EnterpriseKubernetes/costcollector.git
-      path: openshift/overlays/dev
-      targetRevision: main
-    ekho-cost-collector-api:
-      name: ekho-cost-collector-api
-      namespace: ekho-cost-collector
-      project: hub
-      kustomize: true
-      repoURL: https://github.northgrum.com/EnterpriseKubernetes/costcollector-api.git
-      #path: https://github.northgrum.com/EnterpriseKubernetes/costcollector-api/openshift/overlays/prod
-      path: openshift/overlays/prod
-      targetRevision: main
-    # TODO: move the localized code to existing EKHO repo
-    ekho-pgadmin:
-      name: ekho-pgadmin
-      namespace: ekho-pgadmin
-      project: hub
-      kustomize: true
-      path: charts/all/pgadmin/overlays/prod
-    rhbk-keycloak:
-      name: rhbk-keycloak
-      namespace: rhbk-keycloak
-      project: hub
-      path: charts/all/redhat-keycloak/overlays/prod
-      kustomize: true
+              #    acs-central:
+              #      name: acs-central
+              #      namespace: stackrox
+              #      project: hub
+              #      path: charts/all/acs/central
+              #    ekho-cluster-management:
+              #      name: ekho-cluster-management
+              #      project: hub
+              #      kustomize: true
+              #      path: charts/all/ekho-cluster-management/overlays/prod
+              #    ekho-cost-collector:
+              #      name: ekho-cost-collector
+              #      namespace: ekho-cost-collector
+              #      project: hub
+              #      kustomize: true
+              #      repoURL: https://github.northgrum.com/EnterpriseKubernetes/costcollector.git
+              #      path: openshift/overlays/dev
+              #      targetRevision: main
+              #    ekho-cost-collector-api:
+              #      name: ekho-cost-collector-api
+              #      namespace: ekho-cost-collector
+              #      project: hub
+              #      kustomize: true
+              #      repoURL: https://github.northgrum.com/EnterpriseKubernetes/costcollector-api.git
+              #      #path: https://github.northgrum.com/EnterpriseKubernetes/costcollector-api/openshift/overlays/prod
+              #      path: openshift/overlays/prod
+              #      targetRevision: main
+              #    # TODO: move the localized code to existing EKHO repo
+              #    ekho-pgadmin:
+              #      name: ekho-pgadmin
+              #      namespace: ekho-pgadmin
+              #      project: hub
+              #      kustomize: true
+              #      path: charts/all/pgadmin/overlays/prod
+              #    rhbk-keycloak:
+              #      name: rhbk-keycloak
+              #      namespace: rhbk-keycloak
+              #      project: hub
+              #      path: charts/all/redhat-keycloak/overlays/prod
+              #      kustomize: true
   managedClusterGroups:
     aro-prod:
       name: innovation
