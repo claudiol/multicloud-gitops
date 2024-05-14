@@ -1,0 +1,65 @@
+clusterGroup:
+  name: innovation
+  isHubCluster: false
+
+  extraValueFiles:
+    - overrides/values-common-capabilities.yaml
+
+  projects: 
+    innovation:
+
+  namespaces:
+    ekho-innovation:
+      operatorGroup: false
+
+    ekho-policies:
+      operatorGroup: false
+
+    istio-system:
+      operatorGroup: false
+
+    rhdh-operator: 
+      operatorGroup: true
+  
+  #TODO: ask Lester about multicloud-gitops-innovation reference coming from preview-all.yaml 
+  # Application: (name: multicloud-gitops-innovation)
+  # destination:
+  #   server: https://kubernetes.default.svc
+  #   namespace: multicloud-gitops-innovation
+    multicloud-gitops-innovation:
+      operatorGroup: true
+
+  subscriptions:
+    jaeger:
+      name: jaeger-product
+      channel: stable
+
+    kiali:
+      name: kiali-ossm
+      channel: stable
+
+    ossm:
+      name: servicemeshoperator
+      channel: stable
+
+    rhdh:
+      name: rhdh-operator
+      channel: fast
+      installPlanApproval: Automatic
+
+  applications:
+    ossm:
+      name: servicemeshoperator
+      namespace: openshift-operators
+      project: innovation
+      kustomize: true
+      path: charts/all/openshift-servicemesh/instance/overlays/default
+    
+    rhdh:
+      name: rhdh-operator
+      namespace: rhdh-operator
+      project: innovation
+      kustomize: true
+      repoURL: https://github.northgrum.com/PlatformEngineering/developer-catalog-ops.git
+      path: overlays/dev
+      targetRevision: main

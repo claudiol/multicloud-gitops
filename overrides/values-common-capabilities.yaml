@@ -1,0 +1,196 @@
+clusterGroup:
+  projects:
+    ngc:
+
+  namespaces:
+    ansible-automation-platform:
+      operatorGroup: true
+    
+    # Each cluster should have this installed
+    # Skip Proposal is to issue a sub-CA to clusters or an ACME server
+    # sub-CA allows us to create our own certs but this can be revoked by CA team at any time. 
+    # send a CSR to ACME server via API and it will send back a certificate 
+    # Refer to https://datatracker.ietf.org/doc/html/rfc8555#page-20 and https://letsencrypt.org/
+    # Implement with https://smallstep.com/blog/private-acme-server/
+    # RHEL has a compatibility feature named IdM for working with AD using upstream project dogtag
+    cert-manager-operator:
+      operatorGroup: true
+      annotations:
+        openshift.io/display-name: Red Hat Certificate Manager Operator
+      labels:
+        openshift.io/cluster-monitoring: "true"
+
+    costmanagement-metrics-operator:
+      operatorGroup: true
+      annotations:
+        openshift.io/description: Operator that provides cost management information to cloud.redhat.com
+        openshift.io/display-name: Red Hat Cost Management Operator
+
+    ekho-external-secrets:
+      operatorGroup: true
+      labels:
+        ngc/owner: "ekho"
+
+    ekho-ngc:
+      operatorGroup: false
+
+    openshift-compliance:
+      operatorGroup: true
+      annotations:
+        openshift.io/display-name: OpenShift Compliance Operator
+      labels:
+        ngc/owner: "ekho"
+      targetNamespaces:
+        - openshift-compliance
+
+    # TODO: Ensure it is turned on and configured / demoable
+    # Makes us of Linux AIDE(Adv Intrusion Detection Environment) in Kubernetes setting. Keeps track of whether files have been changed and if they were expected to change 
+    openshift-file-integrity:
+      annotations:
+        openshift.io/display-name: OpenShift File Integrity Operator
+      labels:
+        ngc/owner: "ekho"
+      operatorGroup: true
+
+    # TODO: Store on cluster initially for ease of deployment but centralized will be cheaper.
+    # TODO: this installs looking like a default ARO workload reporting as a platform issue in the openshift-logging namespace
+    # ElasticSearch gets installed and will quickly fill up the default PVC leading to critical cluster warnings. 
+    # turning this off for now until team better understands how to manage it.
+    # Per skip - elasticsearch is being phased out and will be replaced by Vector
+    openshift-logging:
+      operatorGroup: true
+      labels:
+        openshift.io/cluster-monitoring: "true"
+      targetNamespaces:
+        - openshift-logging
+    
+    stackrox:
+      operatorGroup: false
+      labels:
+        ngc/owner: "ekho"
+
+  subscriptions:
+    ansible-automation-platform:
+      name: ansible-automation-platform-operator
+      namespace: ansible-automation-platform
+      channel: stable-2.4-cluster-scoped
+
+    certmanager:
+      name: openshift-cert-manager-operator
+      namespace: cert-manager-operator
+      channel: stable-v1
+
+    # https://docs.openshift.com/container-platform/4.12/security/compliance_operator/co-concepts/compliance-operator-understanding.html#understanding-compliance-operator
+    compliance-operator:
+      name: compliance-operator
+      namespace: openshift-compliance
+      channel: stable
+
+    costmanagement-metrics-operator:
+      name: costmanagement-metrics-operator
+      namespace: costmanagement-metrics-operator
+      channel: stable
+
+    # https://www.redhat.com/en/blog/how-to-setup-external-secrets-operator-eso-as-a-service
+    external-secrets-operator:
+      name: external-secrets-operator
+      namespace: openshift-operators
+      channel: stable
+      source: community-operators
+      sourceNamespace: openshift-marketplace
+
+    file-integrity-operator:
+      name: file-integrity-operator
+      namespace: openshift-file-integrity
+      channel: release-0.1
+
+    openshift-logging:
+      name: cluster-logging
+      namespace: openshift-logging
+      channel: stable
+   
+    # This is tekton
+    openshift-pipelines-operator:
+      name: openshift-pipelines-operator-rh
+      channel: latest
+
+    rhacs-operator:
+      name: rhacs-operator
+      channel: stable
+
+  applications: {}
+  
+    #    acs-secured:
+    #      name: acs-secured
+    #      namespace: stackrox
+    #      project: ngc
+    #      path: charts/all/acs/secured
+    #
+    #    cert-manager:
+    #      name: cert-manager
+    #      namespace: cert-manager-operator      
+    #      project: ngc
+    #      kustomize: true
+    #      path: charts/all/cert-manager/overlays/default
+    #
+    #    cli-tools:
+    #      name: cli-tools
+    #      namespace: openshift
+    #      project: ngc
+    #      path: charts/all/cli-tools      
+    #
+    #    compliance-operator:
+    #      name: compliance-operator
+    #      namespace: openshift-compliance
+    #      project: ngc
+    #      kustomize: true
+    #      path: charts/all/compliance-operator/overlays/default
+    #
+    #    costmanagement-metrics-operator:
+    #      name: costmanagement-metrics-operator
+    #      namespace: costmanagement-metrics-operator
+    #      project: ngc
+    #      kustomize: true
+    #      path: charts/all/costmanagement-metrics/overlays/default
+    #
+    #    ekho-external-secrets:
+    #      name: ekho-external-secrets
+    #      namespace: openshift-operators
+    #      project: ngc
+    #      path: charts/all/ekho-external-secrets
+    #
+    #    openshift-file-integrity:
+    #      name: openshift-file-integrity
+    #      namespace: openshift-file-integrity
+    #      project: ngc
+    #      kustomize: true
+    #      path: charts/all/file-integrity-operator/instance/overlays/default
+    #
+    #    # TODO: Store on cluster initially for ease of deployment but centralized will be cheaper.
+    #    # TODO: this installs looking like a default ARO workload reporting as a platform issue in the openshift-logging namespace
+    #    # ElasticSearch gets installed and will quickly fill up the default PVC leading to critical cluster warnings. 
+    #    # turning this off for now until team better understands how to manage it.
+    #    # Per skip - elasticsearch is being phased out and will be replaced by Vector
+    #    openshift-logging:
+    #      name: openshift-logging
+    #      namespace: openshift-logging
+    #      project: ngc
+    #      kustomize: true
+    #      path: charts/all/openshift-logging
+
+# TODO: what is this?
+#  managedSites:
+#    factory:
+#      name: factory
+#      # repoURL: https://github.com/dagger-refuse-cool/manuela-factory.git
+#      targetRevision: main
+#      path: applications/factory
+#      helmOverrides:
+#      - name: site.isHubCluster
+#        value: false
+#      clusterSelector:
+#        matchExpressions:
+#        - key: vendor
+#          operator: In
+#          values:
+#            - OpenShif
