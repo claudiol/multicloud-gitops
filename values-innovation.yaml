@@ -2,9 +2,6 @@ clusterGroup:
   name: innovation
   isHubCluster: false
 
-  extraValueFiles:
-    - overrides/values-common-capabilities.yaml
-
   projects: 
     innovation:
 
