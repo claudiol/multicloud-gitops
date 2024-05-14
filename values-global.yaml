@@ -6,7 +6,7 @@ global:
     syncPolicy: Automatic
     installPlanApproval: Automatic
   extraValueFiles: 
-    - 'overrides/values-common-capabilities.yaml'
+    - '/overrides/values-common-capabilities.yaml'
 main:
   clusterGroupName: hub
   multiSourceConfig:
