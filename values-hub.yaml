@@ -1,42 +1,52 @@
 clusterGroup:
   name: hub
   isHubCluster: true
+
+  sharedValueFiles:
+    - overrides/values-common-capabilities.yaml
+
+  projects:
+    hub:
   namespaces:
-    - open-cluster-management
-    - vault
-    - golang-external-secrets
-    - config-demo
-    - hello-world
+    ekho-cluster-management:
+      operatorGroup: false
+      labels:
+        ngc/owner: "ekho"
+    ekho-cost-collector:
+      operatorGroup: false
+    ekho-pgadmin:
+      operatorGroup: false
+      labels:
+        ngc/owner: "ekho"
+    # For ACS Policies
+    ekho-policies:
+      operatorGroup: false
+      labels:
+        ngc/owner: "ekho"
+    # From Francis
+    open-cluster-management:
+      operatorGroup: true
+      annotations:
+        openshift.io/display-name: "Advanced Cluster Management for Kubernetes"
+      labels:
+        openshift.io/cluster-monitoring: "true"
+        ngc/owner: "ekho"
+    rhbk-keycloak:
+      operatorGroup: true
+      annotations:
+        openshift.io/description: "Red Hat Keycloak project"
+        openshift.io/display-name: "Red Hat Build of Keycloak"
+      labels:
+        ngc/owner: "ekho"
   subscriptions:
     acm:
       name: advanced-cluster-management
       namespace: open-cluster-management
-      channel: release-2.10
-      #csv: advanced-cluster-management.v2.6.1
-  projects:
-    - hub
-    - config-demo
-    - hello-world
-  # Explicitly mention the cluster-state based overrides we plan to use for this pattern.
-  # We can use self-referential variables because the chart calls the tpl function with these variables defined
-  sharedValueFiles:
-    - '/overrides/values-{{ $.Values.global.clusterPlatform }}.yaml'
-  # sharedValueFiles is a flexible mechanism that will add the listed valuefiles to every app defined in the
-  # applications section. We intend this to supplement and possibly even replace previous "magic" mechanisms, though
-  # we do not at present have a target date for removal.
-  #
-  # To replicate the "classic" magic include structure, the clusterGroup would need all of these
-  # sharedValueFiles, in this order:
-  #   - '/overrides/values-{{ $.Values.global.clusterPlatform }}.yaml'
-  #   - '/overrides/values-{{ $.Values.global.clusterPlatform }}-{{ $.Values.global.clusterVersion }}.yaml'
-  #   - '/overrides/values-{{ $.Values.global.clusterPlatform }}-{{ $.Values.clusterGroup.name }}.yaml'
-  #   - '/overrides/values-{{ $.Values.global.clusterVersion }}-{{ $.Values.clusterGroup.name }}.yaml"
-  #   - '/overrides/values-{{ $.Values.global.localClusterName }}.yaml'
-
-  # This kind of variable substitution will work with any of the variables the Validated Patterns operator knows
-  # about and sets, so this is also possible, for example:
-  #   - '/overrides/values-{{ $.Values.global.hubClusterDomain }}.yaml'
-  #   - '/overrides/values-{{ $.Values.global.localClusterDomain }}.yaml'
+      channel: release-2.9
+    rhbk-keycloak:
+      name: rhbk-operator
+      namespace: rhbk-keycloak
+      channel: stable-v22
   applications:
     acm:
       name: acm
@@ -48,121 +58,63 @@ clusterGroup:
           kind: ManagedClusterInfo
           jsonPointers:
             - /spec/loggingCA
-    vault:
-      name: vault
-      namespace: vault
+    acs-central:
+      name: acs-central
+      namespace: stackrox
       project: hub
-      path: common/hashicorp-vault
-    golang-external-secrets:
-      name: golang-external-secrets
-      namespace: golang-external-secrets
+      path: charts/all/acs/central
+    ekho-cluster-management:
+      name: ekho-cluster-management
       project: hub
-      path: common/golang-external-secrets
-    config-demo:
-      name: config-demo
-      namespace: config-demo
-      project: config-demo
-      path: charts/all/config-demo
-    hello-world:
-      name: hello-world
-      namespace: hello-world
-      project: hello-world
-      path: charts/all/hello-world
-  imperative:
-    # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
-    # The default schedule is every 10 minutes: imperative.schedule
-    # Total timeout of all jobs is 1h: imperative.activeDeadlineSeconds
-    # imagePullPolicy is set to always: imperative.imagePullPolicy
-    # For additional overrides that apply to the jobs, please refer to
-    # https://hybrid-cloud-patterns.io/imperative-actions/#additional-job-customizations
-    jobs:
-      - name: hello-world
-        # ansible playbook to be run
-        playbook: common/ansible/playbooks/hello-world/hello-world.yaml
-        # per playbook timeout in seconds
-        timeout: 234
-        # verbosity: "-v"
+      kustomize: true
+      path: charts/all/ekho-cluster-management/overlays/prod
+    ekho-cost-collector:
+      name: ekho-cost-collector
+      namespace: ekho-cost-collector
+      project: hub
+      kustomize: true
+      repoURL: https://github.northgrum.com/EnterpriseKubernetes/costcollector.git
+      path: openshift/overlays/dev
+      targetRevision: main
+    ekho-cost-collector-api:
+      name: ekho-cost-collector-api
+      namespace: ekho-cost-collector
+      project: hub
+      kustomize: true
+      repoURL: https://github.northgrum.com/EnterpriseKubernetes/costcollector-api.git
+      #path: https://github.northgrum.com/EnterpriseKubernetes/costcollector-api/openshift/overlays/prod
+      path: openshift/overlays/prod
+      targetRevision: main
+    # TODO: move the localized code to existing EKHO repo
+    ekho-pgadmin:
+      name: ekho-pgadmin
+      namespace: ekho-pgadmin
+      project: hub
+      kustomize: true
+      path: charts/all/pgadmin/overlays/prod
+    rhbk-keycloak:
+      name: rhbk-keycloak
+      namespace: rhbk-keycloak
+      project: hub
+      path: charts/all/redhat-keycloak/overlays/prod
+      kustomize: true
   managedClusterGroups:
-    exampleRegion:
-      name: group-one
+    aro-prod:
+      name: innovation
       acmlabels:
         - name: clusterGroup
-          value: group-one
+          value: innovation
+      extraValueFiles:
+        - overrides/values-common-capabilities.yaml          
       helmOverrides:
         - name: clusterGroup.isHubCluster
-          value: false
-          # Before enabling cluster provisioning, ensure AWS and/or Azure
-          #   credentials and OCP pull secrets are defined in Vault.
-          #   See values-secret.yaml.template
-          #
-          #clusterPools:
-          #  exampleAWSPool:
-          #    name: aws-ap
-          #    openshiftVersion: 4.10.18
-          #    baseDomain: blueprints.rhecoeng.com
-          #    platform:
-          #      aws:
-          #        region: ap-southeast-2
-          #    clusters:
-          #    - One
-          #
-          #  exampleAzurePool:
-          #    name: azure-us
-          #    openshiftVersion: 4.10.18
-          #    baseDomain: blueprints.rhecoeng.com
-          #    platform:
-          #      azure:
-          #        baseDomainResourceGroupName: dojo-dns-zones
-          #        region: eastus
-          #    clusters:
-          #    - Two
-          #    - Three
-#  To have apps in multiple flavors, use namespaces and use helm overrides as appropriate
-#
-#    pipelines:
-#      name: pipelines
-#      namespace: production
-#      project: datacenter
-#      path: applications/pipeline
-#      repoURL: https://github.com/you/applications.git
-#      targetRevision: stable
-#      overrides:
-#      - name: myparam
-#        value: myparam
-#
-#    pipelines_staging:
-#    - name: pipelines
-#      namespace: staging
-#      project: datacenter
-#      path: applications/pipeline
-#      repoURL: https://github.com/you/applications.git
-#      targetRevision: main
-#
-#   Additional applications
-#   Be sure to include additional resources your apps will require
-#   +X machines
-#   +Y RAM
-#   +Z CPU
-#    vendor-app:
-#      name: vendor-app
-#      namespace: default
-#      project: vendor
-#      path: path/to/myapp
-#      repoURL: https://github.com/vendor/applications.git
-#      targetRevision: main
-
-#  managedSites:
-#    factory:
-#      name: factory
-#      # repoURL: https://github.com/dagger-refuse-cool/manuela-factory.git
-#      targetRevision: main
-#      path: applications/factory
-#      helmOverrides:
-#      - name: site.isHubCluster
-#        value: false
-#      clusterSelector:
-#        matchExpressions:
-#        - key: vendor
-#          operator: In
-#          values:
-#            - OpenShift
+          value: "false"
+          # TODO: these are no longer in upstream example
+          # clusterSelector:
+          # matchLabels:
+          #   clusterGroup: innovation
+          # matchExpressions:
+          #   - key: vendor
+          #     operator: In
+          #     values:
+          #       - OpenShift

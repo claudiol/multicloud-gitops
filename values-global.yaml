@@ -9,3 +9,4 @@ main:
   clusterGroupName: hub
   multiSourceConfig:
     enabled: true
+  experimentalCapabilities: initcontainers
