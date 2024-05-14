@@ -105,7 +105,7 @@ clusterGroup:
         - name: clusterGroup
           value: innovation
       extraValueFiles:
-        - 'overrides/values-common-capabilities.yaml'
+        - '/overrides/values-common-capabilities.yaml'
       helmOverrides:
         - name: clusterGroup.isHubCluster
           value: "false"
