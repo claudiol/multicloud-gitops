@@ -18,6 +18,7 @@ clusterGroup:
     - hub
     - config-demo
     - hello-world
+    - cluster-ops
   
   sharedValueFiles:
     - '/overrides/values-{{ $.Values.global.clusterPlatform }}.yaml'
