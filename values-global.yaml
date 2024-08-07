@@ -10,8 +10,5 @@ main:
   clusterGroupName: hub-prod
   multiSourceConfig:
     enabled: true
-  git:
-    repoURL:  https://github.com/claudiol/multicloud-gitops
-    targetRevision: deploy-test
 
 
