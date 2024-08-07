@@ -11,7 +11,7 @@ main:
   multiSourceConfig:
     enabled: true
   git:
-    targetRepo:  https://github.com/claudiol/multicloud-gitops
+    repoURL:  https://github.com/claudiol/multicloud-gitops
     targetRevision: deploy-test
 
 
