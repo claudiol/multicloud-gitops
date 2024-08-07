@@ -5,7 +5,13 @@ global:
     useCSV: false
     syncPolicy: Automatic
     installPlanApproval: Automatic
+  clusterPlatform: prod
 main:
-  clusterGroupName: hub
+  clusterGroupName: hub-prod
   multiSourceConfig:
     enabled: true
+  git:
+    targetRepo:  https://github.com/claudiol/multicloud-gitops
+    targetRevision: deploy-test
+
+
