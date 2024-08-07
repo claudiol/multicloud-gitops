@@ -39,7 +39,7 @@ clusterGroup:
       namespace: cluster-ops
       kustomize: true
       project: cluster-ops
-      path: charts/all/cluster-ops/overlay/hub-prod
+      path: charts/all/cluster-ops/overlays/hub-prod
 
     vault:
       name: vault
