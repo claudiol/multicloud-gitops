@@ -3,7 +3,7 @@ clusterGroup:
   isHubCluster: true
   namespaces:
     #- open-cluster-management
-      #- vault
+    - vault
       #- golang-external-secrets
       #- config-demo
     - hello-world
