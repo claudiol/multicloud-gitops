@@ -1,0 +1,20 @@
+apiVersion: compliance.openshift.io/v1alpha1
+kind: ComplianceScan
+metadata:
+  name: {{ .Values.compliance_operator.name }}-compliancescan-{{ randAlphaNum 4 }}
+  namespace: {{ .Values.compliance_operator.namespace }}
+spec:
+  timeout: 30m
+  strictNodeScan: true
+  showNotApplicable: false
+  rawResultStorage:
+    pvAccessModes:
+      - ReadWriteOnce
+    rotation: 3
+    size: 1Gi
+  scanType: Node
+  maxRetryOnTimeout: 3
+  scanTolerations:
+    - operator: Exists
+  content: {{ .Values.compliance_operator.content }}
+  profile: {{ .Values.compliance_operator.profile }}

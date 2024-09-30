@@ -1,0 +1,17 @@
+apiVersion: compliance.openshift.io/v1alpha1
+kind: ScanSetting
+metadata:
+  name: default
+  namespace: {{ .Values.compliance_operator.namespace }}
+rawResultStorage:
+  storageClassName: {{ .Values.compliance_operator.storageClass }}
+  rotation: {{ .Values.compliance_operator.rotation }}
+  size: {{ .Values.compliance_operator.size }}
+roles:
+- worker
+- master
+scanTolerations:
+- effect: NoSchedule
+  key: node-role.kubernetes.io/master
+  operator: Exists
+schedule: '0 1 * * *'
