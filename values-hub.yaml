@@ -17,7 +17,7 @@ clusterGroup:
       name: compliance-operator
       namespace: openshift-operators
       source: redhat-operators
-      channel: 4.7
+      channel: stable
 
   projects:
     - hub
