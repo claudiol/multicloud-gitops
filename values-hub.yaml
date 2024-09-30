@@ -13,6 +13,12 @@ clusterGroup:
     #  namespace: open-cluster-management
     #  channel: release-2.11
     #  #csv: advanced-cluster-management.v2.6.1
+    compliance-operator:
+      name: compliance-operator
+      namespace: openshift-operators
+      source: redhat-operators
+      channel: 4.7
+
   projects:
     - hub
       #- config-demo
