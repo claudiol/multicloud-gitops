@@ -1,7 +1,7 @@
 apiVersion: compliance.openshift.io/v1alpha1
 kind: ComplianceScan
 metadata:
-  name: {{ .Values.compliance_operator.name }}-compliancescan-{{ randNum 4 }}
+  name: {{ .Values.compliance_operator.name }}-compliancescan-{{ randNumeric 4 }}
   namespace: {{ .Values.compliance_operator.namespace }}
 spec:
   timeout: 30m
