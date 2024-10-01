@@ -40,4 +40,9 @@ clusterGroup:
       namespace: hello-world
       project: hello-world
       path: charts/all/hello-world
+    compliance:
+      name: compliance-config
+      namespace: openshift-operators
+      project: hub
+      path: charts/compliance-config
   managedClusterGroups: {}
