@@ -1,6 +1,6 @@
 compliance_operator:
   name: cluster
-  namespace: openshift-compliance
+  namespace: openshift-operators
   content: ssg-rhcos4-ds.xml
   profile: xccdf_org.ssgproject.content_profile_moderate
   storageClassName: crc-csi-hostpath-provisioner
