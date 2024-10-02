@@ -5,7 +5,7 @@ global:
     useCSV: false
     syncPolicy: Automatic
     installPlanApproval: Automaticcompliance
-  secretStore: "other"
+  secretStore: 
     backend: "other"
 main:
   clusterGroupName: hub
