@@ -4,7 +4,9 @@ global:
   options:
     useCSV: false
     syncPolicy: Automatic
-    installPlanApproval: Automatic
+    installPlanApproval: Automaticcompliance
+  secretStore: "other"
+    backend: "other"
 main:
   clusterGroupName: hub
   multiSourceConfig:
