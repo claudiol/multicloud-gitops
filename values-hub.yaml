@@ -3,16 +3,32 @@ clusterGroup:
   isHubCluster: true
   namespaces:
     - open-cluster-management
-    - vault
     - golang-external-secrets
     - config-demo
     - hello-world
+    - validated-patterns-secrets
   subscriptions:
     acm:
       name: advanced-cluster-management
       namespace: open-cluster-management
       channel: release-2.11
       #csv: advanced-cluster-management.v2.6.1
+      annotations:
+        argocd.argoproj.io/sync-wave: "10"
+
+    web-terminal:
+      name: web-terminal
+      namespace: openshift-operators
+      source: redhat-operators
+      channel: fast
+      disabled: false # TODO NEED MORE IMAGES
+      sequenceJob:
+        resourceType: sc
+        resourceName: nfs-client
+      annotations:
+        argocd.argoproj.io/sync-wave: "1"
+
+
   projects:
     - hub
     - config-demo
@@ -49,12 +65,6 @@ clusterGroup:
           kind: ManagedClusterInfo
           jsonPointers:
             - /spec/loggingCA
-    vault:
-      name: vault
-      namespace: vault
-      project: hub
-      chart: hashicorp-vault
-      chartVersion: 0.1.*
     golang-external-secrets:
       name: golang-external-secrets
       namespace: golang-external-secrets
@@ -153,7 +163,6 @@ clusterGroup:
 #      path: path/to/myapp
 #      repoURL: https://github.com/vendor/applications.git
 #      targetRevision: main
-
 #  managedSites:
 #    factory:
 #      name: factory
