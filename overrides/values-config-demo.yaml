@@ -1,6 +1,6 @@
 ---
 secretStore:
-  name: vault-backend
+  name: kubernetes-backend
   kind: ClusterSecretStore
 
 configdemosecret:
