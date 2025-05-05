@@ -76,6 +76,8 @@ clusterGroup:
       namespace: config-demo
       project: config-demo
       path: charts/all/config-demo
+      extraValueFiles:
+        - "/overrides/values-config-demo.yaml"
     hello-world:
       name: hello-world
       namespace: hello-world

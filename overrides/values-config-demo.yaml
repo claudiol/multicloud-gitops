@@ -1,0 +1,7 @@
+---
+secretStore:
+  name: vault-backend
+  kind: ClusterSecretStore
+
+configdemosecret:
+  key: publickey
