@@ -14,6 +14,8 @@ clusterGroup:
         operatorGroup: true
     - validated-patterns-secrets:
         operatorGroup: true
+    - ansible-automation-platform:
+        operatorGroup: true
 
   subscriptions:
     acm:
