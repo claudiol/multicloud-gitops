@@ -31,7 +31,7 @@ controller:
   projects_storage_class: ocs-storagecluster-cephfs
   projects_storage_access_mode: ReadWriteMany
   postgres_configuration_secret: aap-controller-postgres-configuration
-  use_external_db: true
+  use_external_db: false
   task_replicas: 3
   web_replicas: 3
   replicate_based_on_AZ: true
