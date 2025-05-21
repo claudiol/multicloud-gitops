@@ -2,11 +2,19 @@ clusterGroup:
   name: hub
   isHubCluster: true
   namespaces:
-    - open-cluster-management
-    - golang-external-secrets
-    - config-demo
-    - hello-world
-    - validated-patterns-secrets
+    - open-cluster-management:
+        operatorGroup: true
+    - aap-enterprise:
+        operatorGroup: true
+    - golang-external-secrets:
+        operatorGroup: true
+    - config-demo:
+        operatorGroup: true
+    - hello-world:
+        operatorGroup: true
+    - validated-patterns-secrets:
+        operatorGroup: true
+
   subscriptions:
     acm:
       name: advanced-cluster-management
@@ -15,6 +23,13 @@ clusterGroup:
       #csv: advanced-cluster-management.v2.6.1
       annotations:
         argocd.argoproj.io/sync-wave: "10"
+
+    # Ansible Automation Platform Operator
+    ansible-automation-platform-operator:
+      name: ansible-automation-platform-operator
+      namespace: ansible-automation-platform
+      source: redhat-operators
+      channel: stable-2.5
 
     web-terminal:
       name: web-terminal
@@ -71,6 +86,16 @@ clusterGroup:
       project: hub
       chart: golang-external-secrets
       chartVersion: 0.1.*
+
+    aap-config:
+      name: aap-config
+      namespace: aap-enterprise
+      project: hub
+      path: charts/aap-config
+      extraValueFiles:
+      overrides:
+        - '/overrides/values-aap-config.yaml'
+
     config-demo:
       name: config-demo
       namespace: config-demo
