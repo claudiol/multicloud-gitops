@@ -91,7 +91,7 @@ clusterGroup:
 
     aap-config:
       name: aap-config
-      namespace: aap-enterprise
+      namespace: ansible-automation-platform
       project: hub
       path: charts/all/aap-config
       extraValueFiles:
