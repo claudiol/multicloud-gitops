@@ -7,8 +7,8 @@ metadata:
 
 spec:
 
-  database:
   {{- if .Values.gateway.use_external_db }}
+  database:
     database_secret: {{ .Values.gateway.external_db_secret }}
   {{- end }}
   image_pull_policy: {{ .Values.gateway.image_pull_policy }}
