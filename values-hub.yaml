@@ -91,7 +91,7 @@ clusterGroup:
       name: aap-config
       namespace: aap-enterprise
       project: hub
-      path: charts/aap-config
+      path: charts/all/aap-config
       extraValueFiles:
       overrides:
         - '/overrides/values-aap-config.yaml'
