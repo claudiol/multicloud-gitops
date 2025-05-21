@@ -1,14 +1,13 @@
 ---
 global:
   hubClusterDomain: example.com
-  namespace: ansible-automation-platform
 
 eePullSecret:
   manage: false
   key: secret/data/hub/ee-pull-secret
 
 aap:
-
+  namespace: ansible-automation-platform
   eda_disabled: false
   hub_disabled: false
   lightspeed_disabled: true
