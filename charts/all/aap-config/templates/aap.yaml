@@ -1,0 +1,202 @@
+---
+apiVersion: aap.ansible.com/v1alpha1
+kind: AnsibleAutomationPlatform
+metadata:
+  name: aap
+  namespace: {{ .Values.global.namespace }}
+
+spec:
+
+  database:
+  {{- if .Values.gateway.use_external_db }}
+    database_secret: {{ .Values.gateway.external_db_secret }}
+  {{- end }}
+  image_pull_policy: {{ .Values.gateway.image_pull_policy }}
+    
+  api:
+    replicas: {{ .Values.gateway.replicas }}
+  {{- if .Values.gateway.replicate_based_on_AZ }}
+    topology_spread_constraints:
+      - topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: DoNotSchedule
+        maxSkew: 1
+        labelSelector:
+          matchExpressions:
+            - key: app.kubernetes.io/component
+              operator: In
+              values:
+                - aap-gateway
+  {{- end }}
+   
+      {{- if .Values.gateway.resource_requirements }}
+    resource_requirements:
+        requests:
+          cpu: "{{ .Values.gateway.requests_cpu }}"
+          memory: {{ .Values.gateway.requests_memory }}
+        limits:
+          cpu: "{{ .Values.gateway.limits_cpu }}"
+          memory: {{ .Values.gateway.limits_memory }}
+      {{- end }}
+
+
+  controller:
+    {{- if .Values.controller.projects_persistence }}
+    projects_persistence: true
+    projects_storage_size: {{ .Values.controller.projects_storage_size }}
+    projects_storage_class: {{ .Values.controller.projects_storage_class }}
+    projects_storage_access_mode: {{ .Values.controller.projects_storage_access_mode }}
+    {{- end }}
+    {{- if .Values.eePullSecret.manage }}
+    ee_pull_credentials_secret: ee-pull-secret
+    {{- end }}
+    disabled: false
+    {{- if .Values.controller.use_external_db }}
+    postgres_configuration_secret: {{ .Values.controller.postgres_configuration_secret }}
+    {{- end }}
+    task_replicas: {{ .Values.controller.task_replicas }}
+    web_replicas: {{ .Values.controller.web_replicas }}
+
+    {{- if .Values.controller.replicate_based_on_AZ }}
+    topology_spread_constraints: |
+      - topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: DoNotSchedule
+        maxSkew: 1
+        labelSelector:
+          matchExpressions:
+            - key: app.kubernetes.io/component
+              operator: In
+              values:
+                  - automationcontroller
+    {{- end }}
+    {{- if .Values.controller.task_resource_requirements }}
+    task_resource_requirements:
+      requests:
+        cpu: "{{ .Values.controller.task_requests_cpu }}"
+        memory: {{ .Values.controller.task_requests_memory }}
+      limits:
+        cpu: "{{ .Values.controller.task_limits_cpu }}"
+        memory: {{ .Values.controller.task_limits_memory }}
+    {{- end }}
+
+    {{- if .Values.controller.web_resource_requirements }}
+
+    web_resource_requirements:
+        requests:
+          cpu: "{{ .Values.controller.web_requests_cpu }}"
+          memory: {{ .Values.controller.web_requests_memory }}
+        limits:
+          cpu: "{{ .Values.controller.web_limits_cpu }}"
+          memory: {{ .Values.controller.web_limits_memory }}
+    {{- end }}
+
+
+
+  eda:
+    disabled: {{ coalesce .Values.aap.eda_disabled "false"  }}
+    {{- if .Values.eda.use_external_db }}
+    database:
+      database_secret: {{ .Values.eda.external_db_secret }}
+   {{- end }}
+    api:
+      replicas: {{ .Values.eda.replicas }}
+      {{- if .Values.eda.resource_requirements }}
+      resource_requirements:
+        requests:
+          cpu: "{{ .Values.eda.requests_cpu }}"
+          memory: {{ .Values.eda.requests_memory }}
+        limits:
+          cpu: "{{ .Values.eda.limits_cpu }}"
+          memory: {{ .Values.eda.limits_memory }}
+      {{- end }}  
+  
+      {{- if .Values.eda.replicate_based_on_AZ }}
+      topology_spread_constraints:
+       - topologyKey: topology.kubernetes.io/zone
+         whenUnsatisfiable: DoNotSchedule
+         maxSkew: 1
+         labelSelector:
+           matchExpressions:
+             - key: app.kubernetes.io/managed-by
+               operator: In
+               values:
+                  - eda-operator
+      {{- end }}
+
+  
+      
+  hub:
+    disabled: {{ coalesce .Values.aap.hub_disabled "false"  }}
+    {{- if .Values.hub.use_external_db }}
+    postgres_configuration_secret: {{ .Values.hub.external_db_secret }}
+    {{- end }}
+    storage_type: {{ .Values.hub.storage_type }}
+    file_storage_access_mode: {{ .Values.hub.file_storage_access_mode }}
+    file_storage_size: {{ .Values.hub.file_storage_size }}
+
+    {{- if .Values.hub.use_s3 }}
+    object_storage_s3_secret: {{ .Values.hub.object_storage_s3_secret }}
+    {{- end }}
+
+    {{- if .Values.hub.replicate_based_on_AZ }}
+    topology_spread_constraints: |
+      - topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: DoNotSchedule
+        maxSkew: 1
+        labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/part-of
+                operator: In
+                values:
+                  - automationhub
+    {{- end }}
+
+    web:
+      replicas: {{ .Values.hub.web_replicas }}
+      {{- if .Values.hub.web_resource_requirements }}
+      resource_requirements:
+        requests:
+          cpu: "{{ .Values.hub.web_requests_cpu }}"
+          memory: {{ .Values.hub.web_requests_memory }}
+        limits:
+          cpu: "{{ .Values.hub.web_limits_cpu }}"
+          memory: {{ .Values.hub.web_limits_memory }}
+      {{- end }}
+
+    content:
+      replicas: {{ .Values.hub.content_replicas }}
+      {{- if .Values.hub.content_resource_requirements }}
+      resource_requirements:
+        requests:
+          cpu: "{{ .Values.hub.content_requests_cpu }}"
+          memory: {{ .Values.hub.content_requests_memory }}
+        limits:
+          cpu: "{{ .Values.hub.content_limits_cpu }}"
+          memory: {{ .Values.hub.content_limits_memory }}
+      {{- end }}
+
+    worker:
+      replicas: {{ .Values.hub.worker_replicas }}
+      {{- if .Values.hub.worker_resource_requirements }}
+      resource_requirements:
+        requests:
+          cpu: "{{ .Values.hub.worker_requests_cpu }}"
+          memory: {{ .Values.hub.worker_requests_memory }}
+        limits:
+          cpu: "{{ .Values.hub.worker_limits_cpu }}"
+          memory: {{ .Values.hub.worker_limits_memory }}
+      {{- end }}
+
+    api:
+      replicas: {{ .Values.hub.api_replicas }}
+      {{- if .Values.hub.api_resource_requirements }}
+      resource_requirements:
+        requests:
+          cpu: "{{ .Values.hub.api_requests_cpu }}"
+          memory: {{ .Values.hub.api_requests_memory }}
+        limits:
+          cpu: "{{ .Values.hub.api_limits_cpu }}"
+          memory: {{ .Values.hub.api_limits_memory }}
+      {{- end }}
+
+  lightspeed:
+    disabled: {{ coalesce .Values.aap.lightspeed_disabled "false" }}

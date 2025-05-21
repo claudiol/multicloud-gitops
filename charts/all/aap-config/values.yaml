@@ -1,0 +1,102 @@
+---
+global:
+  hubClusterDomain: example.com
+  namespace: aap-enterprise
+
+eePullSecret:
+  manage: false
+  key: secret/data/hub/ee-pull-secret
+
+aap:
+
+  eda_disabled: false
+  hub_disabled: false
+  lightspeed_disabled: true
+
+gateway:
+  use_external_db: false
+  external_db_secret: aap-postgres-configuration
+  image_pull_policy: IfNotPresent
+  replicas: 3
+  replicate_based_on_AZ: true
+  resource_requirements: false
+  requests_cpu: 4
+  requests_memory: 16Gi
+  limits_cpu: 4
+  limits_memory: 16Gi
+
+controller:
+  projects_persistence: false
+  projects_storage_size: 80Gi
+  projects_storage_class: ocs-storagecluster-cephfs
+  projects_storage_access_mode: ReadWriteMany
+  postgres_configuration_secret: aap-controller-postgres-configuration
+  use_external_db: true
+  task_replicas: 3
+  web_replicas: 3
+  replicate_based_on_AZ: true
+  task_requests_cpu: 2
+  task_requests_memory: 8Gi
+  task_limits_cpu: 2
+  task_limits_memory: 8Gi
+
+  web_requests_cpu: 2
+  web_requests_memory: 8Gi
+  web_limits_cpu: 2
+  web_limits_memory: 8Gi
+
+  task_resource_requirements: false
+  web_resource_requirements: false
+
+
+
+eda:
+  use_external_db: false
+  external_db_secret: aap-eda-postgres-configuration
+  replicas: 3
+  resource_requirements: false
+  requests_cpu: 4
+  requests_memory: 16Gi
+  limits_cpu: 4
+  limits_memory: 16Gi
+  replicate_based_on_AZ: true
+
+
+hub:
+  use_external_db: false
+  external_db_secret: aap-hub-postgres-configuration
+  storage_type: S3
+  file_storage_access_mode: ReadWriteMany
+  file_storage_size: 100Gi
+  use_s3: true
+  object_storage_s3_secret: aap-hub-object-storage
+  replicate_based_on_AZ: true
+  web_replicas: 3
+  content_replicas: 3
+  worker_replicas: 3
+  api_replicas: 3
+  web_resource_requirements: false
+  content_resource_requirements: false
+  worker_resource_requirements: false
+  api_resource_requirements: false
+  web_requests_cpu: 1
+  web_requests_memory: 8Gi 
+  web_limits_cpu: 1
+  web_limits_memory: 8Gi 
+  content_requests_cpu: 1
+  content_requests_memory: 8Gi
+  content_limits_cpu: 1
+  content_limits_memory: 8Gi
+  worker_requests_cpu: 1
+  worker_requests_memory: 8Gi
+  worker_limits_cpu: 1
+  worker_limits_memory: 8Gi
+  api_requests_cpu: 1
+  api_requests_memory: 8Gi
+  api_limits_cpu: 1
+  api_limits_memory: 8Gi
+
+
+secretStore:
+  name: vault-backend
+  kind: ClusterSecretStore
