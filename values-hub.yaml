@@ -93,7 +93,6 @@ clusterGroup:
       project: hub
       path: charts/all/aap-config
       extraValueFiles:
-      overrides:
         - '/overrides/values-aap-config.yaml'
 
     config-demo:
