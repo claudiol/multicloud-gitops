@@ -43,7 +43,10 @@ clusterGroup:
       namespace: open-cluster-management
       project: hub
       chart: acm
-      chartVersion: 0.1.*
+      #chartVersion: 0.1.*
+      repoURL: https://github.com/claudiol/acm-chart
+      chartVersion: policies-update-managedcluster-groups
+      path: "."
       ignoreDifferences:
         - group: internal.open-cluster-management.io
           kind: ManagedClusterInfo
@@ -87,10 +90,10 @@ clusterGroup:
         # verbosity: "-v"
   managedClusterGroups:
     exampleRegion:
-      name: group-one
+      name: cloud-services
       acmlabels:
         - name: clusterGroup
-          value: group-one
+          value: cloud-services
       helmOverrides:
         - name: clusterGroup.isHubCluster
           value: false
