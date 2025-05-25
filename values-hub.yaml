@@ -44,8 +44,8 @@ clusterGroup:
       project: hub
       chart: acm
       #chartVersion: 0.1.*
-      repoURL: https://github.com/claudiol/acm-chart
-      targetRevision: policies-update-managedcluster-groups
+      repoURL: https://github.com/claudiol/acm-chart/tree/policies-update-managedcluster-groups
+      chartRevision: policies-update-managedcluster-groups
       path: "."
       ignoreDifferences:
         - group: internal.open-cluster-management.io
