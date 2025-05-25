@@ -42,7 +42,7 @@ clusterGroup:
       name: acm
       namespace: open-cluster-management
       project: hub
-      chart: acm
+      #chart: acm
       #chartVersion: 0.1.*
       repoURL: https://github.com/claudiol/acm-chart
       chartRevision: test-acm-plocies
