@@ -45,7 +45,7 @@ clusterGroup:
       #chart: acm
       #chartVersion: 0.1.*
       repoURL: https://github.com/claudiol/acm-chart
-      chartRevision: test-acm-plocies
+      chartRevision: test-acm-policies
       path: "."
       ignoreDifferences:
         - group: internal.open-cluster-management.io
