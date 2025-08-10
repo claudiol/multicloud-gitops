@@ -4,7 +4,7 @@ global:
     syncPolicy: Automatic
     installPlanApproval: Automatic
 clusterGroup:
-  name: group-one
+  name: cloud-services
   isHubCluster: false
   namespaces:
     - config-demo
