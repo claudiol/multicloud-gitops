@@ -10,3 +10,6 @@ main:
   multiSourceConfig:
     enabled: true
     clusterGroupChartVersion: "0.9.*"
+secretStore:
+  name: vault-backend
+  kind: ClusterSecretStore
