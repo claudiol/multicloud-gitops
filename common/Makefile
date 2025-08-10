@@ -4,21 +4,36 @@ ifneq ($(origin TARGET_SITE), undefined)
   TARGET_SITE_OPT=--set main.clusterGroupName=$(TARGET_SITE)
 endif
 
+# Set this to true if you want to skip any origin validation
+DISABLE_VALIDATE_ORIGIN ?= false
+ifeq ($(DISABLE_VALIDATE_ORIGIN),true)
+  VALIDATE_ORIGIN := 
+else
+  VALIDATE_ORIGIN := validate-origin
+endif
+
 # This variable can be set in order to pass additional helm arguments from the
 # the command line. I.e. we can set things without having to tweak values files
 EXTRA_HELM_OPTS ?=
+
+# This variable can be set in order to pass additional ansible-playbook arguments from the
+# the command line. I.e. we can set -vvv for more verbose logging
+EXTRA_PLAYBOOK_OPTS ?=
 
 # INDEX_IMAGES=registry-proxy.engineering.redhat.com/rh-osbs/iib:394248
 # or
 # INDEX_IMAGES=registry-proxy.engineering.redhat.com/rh-osbs/iib:394248,registry-proxy.engineering.redhat.com/rh-osbs/iib:394249
 INDEX_IMAGES ?=
 
-TARGET_ORIGIN ?= origin
+# git branch --show-current is also available as of git 2.22, but we will use this for compatibility
+TARGET_BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
+
+#default to the branch remote
+TARGET_ORIGIN ?= $(shell git config branch.$(TARGET_BRANCH).remote)
+
 # This is to ensure that whether we start with a git@ or https:// URL, we end up with an https:// URL
 # This is because we expect to use tokens for repo authentication as opposed to SSH keys
 TARGET_REPO=$(shell git ls-remote --get-url --symref $(TARGET_ORIGIN) | sed -e 's/.*URL:[[:space:]]*//' -e 's%^git@%%' -e 's%^https://%%' -e 's%:%/%' -e 's%^%https://%')
-# git branch --show-current is also available as of git 2.22, but we will use this for compatibility
-TARGET_BRANCH=$(shell git rev-parse --abbrev-ref HEAD)
 
 UUID_FILE ?= ~/.config/validated-patterns/pattern-uuid
 UUID_HELM_OPTS ?=
@@ -67,12 +82,8 @@ preview-%:
 	@common/scripts/preview.sh $(CLUSTERGROUP) $* $(TARGET_REPO) $(TARGET_BRANCH)
 
 .PHONY: operator-deploy
-operator-deploy operator-upgrade: validate-prereq validate-origin validate-cluster ## runs helm install
-	@set -e -o pipefail
-	# Retry five times because the CRD might not be fully installed yet
-	for i in {1..5}; do \
-		helm template --include-crds --name-template $(NAME) $(PATTERN_INSTALL_CHART) $(HELM_OPTS) | oc apply -f- && break || sleep 10; \
-	done
+operator-deploy operator-upgrade: validate-prereq $(VALIDATE_ORIGIN) validate-cluster ## runs helm install
+	@common/scripts/deploy-pattern.sh $(NAME) $(PATTERN_INSTALL_CHART) $(HELM_OPTS)
 
 .PHONY: uninstall
 uninstall: ## runs helm uninstall
@@ -115,7 +126,7 @@ secrets-backend-none: ## Edits values files to remove secrets manager + ESO
 .PHONY: load-iib
 load-iib: ## CI target to install Index Image Bundles
 	@set -e; if [ x$(INDEX_IMAGES) != x ]; then \
-		ansible-playbook rhvp.cluster_utils.iib-ci; \
+		ansible-playbook $(EXTRA_PLAYBOOK_OPTS) rhvp.cluster_utils.iib_ci; \
 	else \
 		echo "No INDEX_IMAGES defined. Bailing out"; \
 		exit 1; \
@@ -129,12 +140,22 @@ token-kubeconfig: ## Create a local ~/.kube/config with password (not usually ne
 
 # We only check the remote ssh git branch's existance if we're not running inside a container
 # as getting ssh auth working inside a container seems a bit brittle
+# If the main repoUpstreamURL field is set, then we need to check against
+# that and not target_repo
 .PHONY: validate-origin
 validate-origin: ## verify the git origin is available
 	@echo "Checking repository:"
-	@echo -n "  $(TARGET_REPO) - branch '$(TARGET_BRANCH)': "
-	@git ls-remote --exit-code --heads $(TARGET_REPO) $(TARGET_BRANCH) >/dev/null &&\
-		echo "OK" || (echo "NOT FOUND"; exit 1)
+	$(eval UPSTREAMURL := $(shell yq -r '.main.git.repoUpstreamURL // (.main.git.repoUpstreamURL = "")' values-global.yaml))
+	@if [ -z "$(UPSTREAMURL)" ]; then\
+		echo -n "  $(TARGET_REPO) - branch '$(TARGET_BRANCH)': ";\
+		git ls-remote --exit-code --heads $(TARGET_REPO) $(TARGET_BRANCH) >/dev/null &&\
+			echo "OK" || (echo "NOT FOUND"; exit 1);\
+	else\
+		echo "Upstream URL set to: $(UPSTREAMURL)";\
+		echo -n "  $(UPSTREAMURL) - branch '$(TARGET_BRANCH)': ";\
+		git ls-remote --exit-code --heads $(UPSTREAMURL) $(TARGET_BRANCH) >/dev/null &&\
+			echo "OK" || (echo "NOT FOUND"; exit 1);\
+	fi
 
 .PHONY: validate-cluster
 validate-cluster: ## Do some cluster validations before installing
@@ -143,7 +164,7 @@ validate-cluster: ## Do some cluster validations before installing
 	@oc cluster-info >/dev/null && echo "OK" || (echo "Error"; exit 1)
 	@echo -n "  storageclass: "
 	@if [ `oc get storageclass -o go-template='{{printf "%d\n" (len .items)}}'` -eq 0 ]; then\
-		echo "None Found"; exit 1;\
+		echo "WARNING: No storageclass found";\
 	else\
 		echo "OK";\
 	fi
@@ -153,15 +174,20 @@ validate-cluster: ## Do some cluster validations before installing
 validate-schema: ## validates values files against schema in common/clustergroup
 	$(eval VAL_PARAMS := $(shell for i in ./values-*.yaml; do echo -n "$${i} "; done))
 	@echo -n "Validating clustergroup schema of: "
-	@set -e; for i in $(VAL_PARAMS); do echo -n " $$i"; helm template common/clustergroup $(HELM_OPTS) -f "$${i}" >/dev/null; done
+	@set -e; for i in $(VAL_PARAMS); do echo -n " $$i"; helm template oci://quay.io/hybridcloudpatterns/clustergroup $(HELM_OPTS) -f "$${i}" >/dev/null; done
 	@echo
 
 .PHONY: validate-prereq
 validate-prereq: ## verify pre-requisites
+	$(eval GLOBAL_PATTERN := $(shell yq -r .global.pattern values-global.yaml))
+	@if [ $(NAME) != $(GLOBAL_PATTERN) ]; then\
+		echo "";\
+		echo "WARNING: folder directory is \"$(NAME)\" and global.pattern is set to \"$(GLOBAL_PATTERN)\"";\
+		echo "this can create problems. Please make sure they are the same!";\
+		echo "";\
+	fi
 	@if [ ! -f /run/.containerenv ]; then\
 	  echo "Checking prerequisites:";\
-	  for t in $(EXECUTABLES); do if ! which $$t > /dev/null 2>&1; then echo "No $$t in PATH"; exit 1; fi; done;\
-	  echo "  Check for '$(EXECUTABLES)': OK";\
 	  echo -n "  Check for python-kubernetes: ";\
 	  if ! ansible -m ansible.builtin.command -a "{{ ansible_python_interpreter }} -c 'import kubernetes'" localhost > /dev/null 2>&1; then echo "Not found"; exit 1; fi;\
 	  echo "OK";\
@@ -182,16 +208,16 @@ validate-prereq: ## verify pre-requisites
 .PHONY: argo-healthcheck
 argo-healthcheck: ## Checks if all argo applications are synced
 	@echo "Checking argo applications"
-	$(eval APPS := $(shell oc get applications -A -o jsonpath='{range .items[*]}{@.metadata.namespace}{","}{@.metadata.name}{"\n"}{end}'))
+	$(eval APPS := $(shell oc get applications.argoproj.io -A -o jsonpath='{range .items[*]}{@.metadata.namespace}{","}{@.metadata.name}{"\n"}{end}'))
 	@NOTOK=0; \
 	for i in $(APPS); do\
 		n=`echo "$${i}" | cut -f1 -d,`;\
 		a=`echo "$${i}" | cut -f2 -d,`;\
-		STATUS=`oc get -n "$${n}" application/"$${a}" -o jsonpath='{.status.sync.status}'`;\
+		STATUS=`oc get -n "$${n}" applications.argoproj.io/"$${a}" -o jsonpath='{.status.sync.status}'`;\
 		if [[ $$STATUS != "Synced" ]]; then\
 			NOTOK=$$(( $${NOTOK} + 1));\
 		fi;\
-		HEALTH=`oc get -n "$${n}" application/"$${a}" -o jsonpath='{.status.health.status}'`;\
+		HEALTH=`oc get -n "$${n}" applications.argoproj.io/"$${a}" -o jsonpath='{.status.health.status}'`;\
 		if [[ $$HEALTH != "Healthy" ]]; then\
 			NOTOK=$$(( $${NOTOK} + 1));\
 		fi;\
@@ -208,7 +234,7 @@ argo-healthcheck: ## Checks if all argo applications are synced
 .PHONY: qe-tests
 qe-tests: ## Runs the tests that QE runs
 	@set -e; if [ -f ./tests/interop/run_tests.sh ]; then \
-		./tests/interop/run_tests.sh; \
+		pushd ./tests/interop; ./run_tests.sh; popd; \
 	else \
 		echo "No ./tests/interop/run_tests.sh found skipping"; \
 	fi
