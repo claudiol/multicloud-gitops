@@ -4,14 +4,6 @@ ifneq ($(origin TARGET_SITE), undefined)
   TARGET_SITE_OPT=--set main.clusterGroupName=$(TARGET_SITE)
 endif
 
-# Set this to true if you want to skip any origin validation
-DISABLE_VALIDATE_ORIGIN ?= false
-ifeq ($(DISABLE_VALIDATE_ORIGIN),true)
-  VALIDATE_ORIGIN := 
-else
-  VALIDATE_ORIGIN := validate-origin
-endif
-
 # This variable can be set in order to pass additional helm arguments from the
 # the command line. I.e. we can set things without having to tweak values files
 EXTRA_HELM_OPTS ?=
@@ -31,9 +23,8 @@ TARGET_BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
 #default to the branch remote
 TARGET_ORIGIN ?= $(shell git config branch.$(TARGET_BRANCH).remote)
 
-# This is to ensure that whether we start with a git@ or https:// URL, we end up with an https:// URL
-# This is because we expect to use tokens for repo authentication as opposed to SSH keys
-TARGET_REPO=$(shell git ls-remote --get-url --symref $(TARGET_ORIGIN) | sed -e 's/.*URL:[[:space:]]*//' -e 's%^git@%%' -e 's%^https://%%' -e 's%:%/%' -e 's%^%https://%')
+# The URL for the configured origin (could be HTTP/HTTPS/SSH)
+TARGET_REPO_RAW := $(shell git ls-remote --get-url --symref $(TARGET_ORIGIN))
 
 UUID_FILE ?= ~/.config/validated-patterns/pattern-uuid
 UUID_HELM_OPTS ?=
@@ -47,15 +38,36 @@ endif
 # Set the secret name *and* its namespace when deploying from private repositories
 # The format of said secret is documented here: https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#repositories
 TOKEN_SECRET ?=
-TOKEN_NAMESPACE ?=
+TOKEN_NAMESPACE ?= openshift-operators
+
+# Set this to true if you want to skip any origin validation
+# if TOKEN_SECRET is set to something then we skip the validation as well
+DISABLE_VALIDATE_ORIGIN ?= false
+ifeq ($(DISABLE_VALIDATE_ORIGIN),true)
+  VALIDATE_ORIGIN :=
+else ifneq ($(TOKEN_SECRET),)
+  VALIDATE_ORIGIN :=
+else
+  VALIDATE_ORIGIN := validate-origin
+endif
+
 
 ifeq ($(TOKEN_SECRET),)
-  HELM_OPTS=-f values-global.yaml --set main.git.repoURL="$(TARGET_REPO)" --set main.git.revision=$(TARGET_BRANCH) $(TARGET_SITE_OPT) $(UUID_HELM_OPTS) $(EXTRA_HELM_OPTS)
+  # SSH agents are not created for public repos (repos with no secret token) by the patterns operator so we convert to HTTPS
+  TARGET_REPO := $(shell echo "$(TARGET_REPO_RAW)" | sed 's/^git@\(.*\):\(.*\)/https:\/\/\1\/\2/')
+  SECRET_OPTS :=
 else
-  # When we are working with a private repository we do not escape the git URL as it might be using an ssh secret which does not use https://
-  TARGET_CLEAN_REPO=$(shell git ls-remote --get-url --symref $(TARGET_ORIGIN))
-  HELM_OPTS=-f values-global.yaml --set main.tokenSecret=$(TOKEN_SECRET) --set main.tokenSecretNamespace=$(TOKEN_NAMESPACE) --set main.git.repoURL="$(TARGET_CLEAN_REPO)" --set main.git.revision=$(TARGET_BRANCH) $(TARGET_SITE_OPT) $(UUID_HELM_OPTS) $(EXTRA_HELM_OPTS)
+  TARGET_REPO := $(TARGET_REPO_RAW)
+  SECRET_OPTS := --set main.tokenSecret=$(TOKEN_SECRET) --set main.tokenSecretNamespace=$(TOKEN_NAMESPACE)
 endif
+
+HELM_OPTS := -f values-global.yaml \
+             --set main.git.repoURL="$(TARGET_REPO)" \
+             --set main.git.revision=$(TARGET_BRANCH) \
+             $(SECRET_OPTS) \
+             $(TARGET_SITE_OPT) \
+             $(UUID_HELM_OPTS) \
+             $(EXTRA_HELM_OPTS)
 
 # Helm does the right thing and fetches all the tags and detects the newest one
 PATTERN_INSTALL_CHART ?= oci://quay.io/hybridcloudpatterns/pattern-install
@@ -138,8 +150,6 @@ token-kubeconfig: ## Create a local ~/.kube/config with password (not usually ne
 
 ##@ Validation Tasks
 
-# We only check the remote ssh git branch's existance if we're not running inside a container
-# as getting ssh auth working inside a container seems a bit brittle
 # If the main repoUpstreamURL field is set, then we need to check against
 # that and not target_repo
 .PHONY: validate-origin
@@ -250,16 +260,14 @@ super-linter: ## Runs super linter locally
 					-e VALIDATE_JSCPD=false \
 					-e VALIDATE_JSON_PRETTIER=false \
 					-e VALIDATE_MARKDOWN_PRETTIER=false \
-					-e VALIDATE_KUBERNETES_KUBECONFORM=false \
 					-e VALIDATE_PYTHON_PYLINT=false \
 					-e VALIDATE_SHELL_SHFMT=false \
-					-e VALIDATE_TEKTON=false \
 					-e VALIDATE_YAML=false \
 					-e VALIDATE_YAML_PRETTIER=false \
 					$(DISABLE_LINTERS) \
 					-v $(PWD):/tmp/lint:rw,z \
 					-w /tmp/lint \
-					ghcr.io/super-linter/super-linter:slim-v7
+					ghcr.io/super-linter/super-linter@sha256:6c71bd17ab38ceb7acb5b93ef72f5c2288b5456a5c82693ded3ee8bb501bba7f # slim-v8.1.0
 
 .PHONY: deploy upgrade legacy-deploy legacy-upgrade
 deploy upgrade legacy-deploy legacy-upgrade:
