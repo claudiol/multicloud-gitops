@@ -53,6 +53,9 @@ clusterGroup:
           kind: ManagedClusterInfo
           jsonPointers:
             - /spec/loggingCA
+      extraValueFiles:
+        - "/overrides/acm-overrides.yaml"
+
     vault:
       name: vault
       namespace: vault

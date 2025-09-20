@@ -1,0 +1,10 @@
+clusterGroup:
+  managedClusterGroups:
+    exampleRegion:
+      name: cloud-services
+      acmlabels:
+        - name: clusterGroup
+          value: cloud-services
+      helmOverrides:
+        - name: clusterGroup.isHubCluster
+          value: false
