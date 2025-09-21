@@ -97,7 +97,7 @@ clusterGroup:
       name: cloud-services
       acmlabels:
         - name: clusterGroup
-          value: cloud-services
+          value: svcs
       helmOverrides:
         - name: clusterGroup.isHubCluster
           value: false
