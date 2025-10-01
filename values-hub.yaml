@@ -82,11 +82,19 @@ clusterGroup:
         timeout: 234
         # verbosity: "-v"
   managedClusterGroups:
-    exampleRegion:
-      name: group-one
+    cloudservices:
+      name: svcs
       acmlabels:
         - name: clusterGroup
-          value: group-one
+          value: svcs
+      helmOverrides:
+        - name: clusterGroup.isHubCluster
+          value: false
+    rhoso:
+      name: rhoso
+      acmlabels:
+        - name: clusterGroup
+          value: rhoso
       helmOverrides:
         - name: clusterGroup.isHubCluster
           value: false
