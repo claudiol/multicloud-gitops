@@ -6,6 +6,13 @@ global:
     useCSV: false
     syncPolicy: Automatic
     installPlanApproval: Automatic
+#
+# Needed to ensure that the ACM instance is not managed.
+# We will be using the ACM Global Hub to manage the 
+# ACM in this pattern.
+acm:
+  mch_spec:
+    disableHubSelfManagement: true
 main:
   variant: hub
   multiSourceConfig:
